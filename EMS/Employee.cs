@@ -246,7 +246,7 @@ namespace EMS
 
         public void Payslip()
         {
-            string fileName = @"E:\C# training\EMS\EMS\" + _userName + "_" + _empID + ".txt";
+            string fileName = @"E:\C# training\EMS\SalarySlip\" + _userName + "_" + _empID + ".txt";
             try
             {
                 // Check if file already exists. If yes, delete it.     
