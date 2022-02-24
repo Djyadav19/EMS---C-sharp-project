@@ -1,0 +1,8 @@
+E:\C# training\EMS\EMS\EMS\bin\Debug\EMS.exe.config
+E:\C# training\EMS\EMS\EMS\bin\Debug\EMS.exe
+E:\C# training\EMS\EMS\EMS\bin\Debug\EMS.pdb
+E:\C# training\EMS\EMS\EMS\obj\Debug\EMS.csproj.AssemblyReference.cache
+E:\C# training\EMS\EMS\EMS\obj\Debug\EMS.csproj.SuggestedBindingRedirects.cache
+E:\C# training\EMS\EMS\EMS\obj\Debug\EMS.csproj.CoreCompileInputs.cache
+E:\C# training\EMS\EMS\EMS\obj\Debug\EMS.exe
+E:\C# training\EMS\EMS\EMS\obj\Debug\EMS.pdb
