@@ -24,7 +24,7 @@ namespace EMS
             try
             {
                 //Regex r = new Regex(@"^[0-9]{10}$");
-                var input = InputCheck.RegexCheck(r);
+                var input = InputCheck.RegexCheck(r , s);
                 input = "'" + input + "'";
                 var sql = "";
                 sql = @"update  Employee set " + s + " = " + input + " where empID = '" + _empID + "'";
@@ -38,6 +38,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }
@@ -106,6 +107,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }

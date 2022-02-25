@@ -42,6 +42,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }
@@ -75,6 +76,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }

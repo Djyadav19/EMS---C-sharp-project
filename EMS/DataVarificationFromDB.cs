@@ -38,6 +38,7 @@ class DataVarificationFromDB
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            Console.WriteLine("Press any key to return...");
             Console.ReadLine();
             return -1;
         }
@@ -68,6 +69,7 @@ class DataVarificationFromDB
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            Console.WriteLine("Press any key to return...");
             Console.ReadLine();
             return false;
         }
@@ -102,6 +104,7 @@ class DataVarificationFromDB
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            Console.WriteLine("Press any key to return...");
             Console.ReadLine();
             return false;
         }
@@ -125,6 +128,7 @@ class DataVarificationFromDB
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            Console.WriteLine("Press any key to return...");
             Console.ReadLine();
             return false;
         }

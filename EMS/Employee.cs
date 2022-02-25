@@ -40,12 +40,12 @@ namespace EMS
                 Console.WriteLine("Your Emp ID is : " + _empID + "\nPlease Note It");
                 Console.WriteLine("Enter First Name: ");
                 Regex r;
-                r = new Regex(@"^[a-zA-Z][a-zA-Z ]+[a-z0-9A-Z]$");
+                r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]+[a-z0-9A-Z]{1,30}$");
                 ;
-                _firstName = InputCheck.RegexCheck(r);
+                _firstName = InputCheck.RegexCheck(r," First Name");
                 Console.WriteLine("Enter Last Name: ");
-                r = new Regex(@"^[a-zA-Z][a-zA-Z ]+[a-z0-9A-Z]$");
-                _lastName = InputCheck.RegexCheck(r);
+                r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]+[a-z0-9A-Z]{1,30}$");
+                _lastName = InputCheck.RegexCheck(r, " Last name");
                 Console.WriteLine("Create a _userName: ");
                 while (true)
                 {
@@ -53,7 +53,7 @@ namespace EMS
                     Console.WriteLine("Enter _userName : \n" +
                                       "Size of _userName must be between greater than 2 and smaller than 29: ");
                     r = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,29}$");
-                    var input = InputCheck.RegexCheck(r);
+                    var input = InputCheck.RegexCheck(r," Username ");
                     //adapter = new SqlDataAdapter();
                     var query = @"SELECT userName from Employee where userName = '" + input + "'";
                     using (var cmd = new SqlCommand(query, sqlconnection))
@@ -83,16 +83,16 @@ namespace EMS
                 _password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
                 Console.WriteLine("\nAppoint _position : ");
                 _position = InputCheck.StringCheck("_position ");
-                Console.WriteLine("Enter Date Of Joining: yyyy - MM - dd ");
+                Console.WriteLine("Enter Date Of Joining: yyyy-MM-dd ");
                 _dojDateTime = InputCheck.DateCheck();
                 Console.WriteLine("Enter Per_month _salary : ");
                 _montlyFixedSalary = Convert.ToString(InputCheck.NumericCheck("Per Month _salary"));
                 Console.WriteLine("Enter _mobile : ");
                 r = new Regex(@"^[0-9]{10}$");
-                _mobile = InputCheck.RegexCheck(r);
+                _mobile = InputCheck.RegexCheck(r," Mobile");
                 Console.WriteLine("Enter _email: ");
                 r = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-                _email = InputCheck.RegexCheck(r);
+                _email = InputCheck.RegexCheck(r," Email Id ");
                 Console.WriteLine("Select the Type of Employee\n");
                 _isAdmin = InputCheck.IsBoolean();
                 var date = "'" + Convert.ToString(_dojDateTime) + "'";
@@ -110,6 +110,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }
@@ -157,6 +158,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }
@@ -184,6 +186,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }
@@ -200,8 +203,6 @@ namespace EMS
                     _empID = InputCheck.NumericCheck("Emp Id");
                     if (EmpId_check(_empID, sqlconnection))
                     {
-                        SqlCommand cmd;
-                        var adapter = new SqlDataAdapter();
                         var query = @"SELECT userName from Employee where empID = " + _empID;
                         var rdr = SqlQuery.ExecuteSelectQuery(query, sqlconnection);
                         while (rdr.Read())
@@ -239,6 +240,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }
@@ -262,6 +264,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 
             }
@@ -280,12 +283,13 @@ namespace EMS
                     {
                         Console.WriteLine("Enter the Number of working days: ");
                         var wrokingDays = InputCheck.NumericCheck("Days");
-                        var query = @"SELECT DailyWages from Employee where empID = " + _empID;
+                        var query = @"SELECT DailyWages and username from Employee where empID = " + _empID;
                         var rdr = SqlQuery.ExecuteSelectQuery(query, sqlconnection);
                         double tmp = 0;
                         while (rdr.Read())
                         {
-                            tmp = rdr.GetDouble(0);
+                            _userName = rdr.GetString(0); 
+                            tmp = rdr.GetDouble(1);
                             _salary = wrokingDays * tmp / 30;
                             break;
                         }
@@ -321,6 +325,7 @@ namespace EMS
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
                 //return false;
             }
