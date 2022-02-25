@@ -8,28 +8,16 @@ namespace EMS
     {
         static void Main(string[] args)
         {
-
-            
-
-
-            var _connectionString = ConfigurationManager.ConnectionStrings["Test"].ConnectionString;
-
-            var connectionString1 = ConfigurationManager.ConnectionStrings["Test1"].ConnectionString;
-
-
-
-            
-            //Configuratio
-
+            //getting connection string from app.config...
+            var _connectionString = ConfigurationManager.ConnectionStrings["str1"].ConnectionString;
+            var connectionString1 = ConfigurationManager.ConnectionStrings["str2"].ConnectionString;
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(@"Login in 
-1. Company A :
-2. Company B :
-3. Exit  : ");
+                Console.WriteLine("Login in " + "\n1. Company A : " + "\n2. Company B : " + "\n3. Exit  : ");
                 short choice = 0;
                 var input = short.TryParse(Console.ReadLine(), out choice);
+                //calling the logging function for login...
                 switch (choice)
                 {
                     case 1:

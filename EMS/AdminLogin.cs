@@ -6,70 +6,95 @@ namespace EMS
 {
     class AdminLogin 
     {
-        //public SqlConnection sqlconnection { get; set; }
-        private string _connectionString { get; set; }
+        public SqlConnection sqlconnection { get; set; }
+        private string _userName { get; set; }
 
-        public AdminLogin(string _connectionString) //: base(_connectionString)
+        private void ToGetUsernameForManipulation(SqlConnection sqlconnection)
         {
-            this._connectionString = _connectionString;
-        }
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("-------------->Enter EMP ID To Update the details: ");
+                var _empID = InputCheck.NumericCheck("Emp Id");
+                var obj2 = new DataVarificationFromDB();
+                if (obj2.EmpIdCheck(_empID, sqlconnection))
+                {
+                    var sqlQuery = @"SELECT userName from Employee where empID = " + _empID;
+                    try
+                    {
 
+                        using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
+                        {
+                            while (rdr.Read())
+                            {
+                                _userName = rdr.GetString(0);
+                                break;
+                            }
+                            //rdr.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("Press any key to return...");
+                        Console.ReadLine();
+                    }
+
+                    var obj1 = new Manipulation(_userName, _empID, sqlconnection);
+                    obj1.Option();
+                }
+                else
+                {
+                    Console.WriteLine("-------------->_empID Is not present in Database: ");
+                    Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
+                                      "\n-------------->2.Press any key to Return previous menu:");
+                    var check = Console.ReadLine();
+                    if (check == "1") continue;
+                }
+                break;
+            }
+
+        }
+        
         public void AdminOption(SqlConnection sqlconnection)
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" ---->Logged in As Admin\n ");
-                Console.WriteLine(@"1.To add an Employee:
-2.To Manipulate Employee Details:
-3.To Retrieve  Employee Details:
-4.To Delete Employee Details:
-5.TO generate Payroll.
-6.Exit ");
+                Console.WriteLine(" ---->Logged in As Admin ");
+                Console.WriteLine("\n1.To add an Employee: "+
+                                  "\n2.To Manipulate Employee Details: "+
+                                  "\n3.To Retrieve  Employee Details: "+
+                                  "\n4.To Delete Employee Details: "+
+                                  "\n5.TO generate Payroll: "+
+                                  "\n6.Exit ");
                 var choice = InputCheck.NumericCheck("choice");
                 Employee obj;
                 switch (choice)
                 {
                     case 1:
                         Console.Clear();
-                        obj = new Employee(_connectionString);
+                        obj = new Employee();
                         obj.SetDataEmployee(sqlconnection);
                         break;
                     case 2:
-                        Console.Clear();
-                        Console.WriteLine("-------------->Enter EMP ID To Update the details: ");
-                        var _empID = InputCheck.NumericCheck("Emp Id");
-                        var obj2 = new DataVarificationFromDB(_connectionString);
-                        if (obj2.EmpId_check(_empID, sqlconnection))
-                        {
-                            var obj1 = new Manipulation(_empID, _connectionString, sqlconnection);
-                            obj1.Option();
-                        }
-                        else
-                        {
-                            Console.WriteLine("-------------->_empID Is not present in Database: ");
-                            Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
-                                              "\n-------------->2.Press any key to Return previous menu:");
-                            var check = Console.ReadLine();
-                            if (check == "1") goto case 2;
-                        }
-
+                        ToGetUsernameForManipulation(sqlconnection);
                         break;
                     case 3:
                         Console.Clear();
-                        //Console.WriteLine("check kar raha hun bhai");
-                        obj = new Employee(_connectionString);
+                        
+                        obj = new Employee();
                         obj.GetEmployeeDetails(sqlconnection);
                         break;
                     case 4:
                         Console.Clear();
-                        obj = new Employee(_connectionString);
-                        obj.DelEmployeeDetails(sqlconnection);
-                        return;
+                        obj = new Employee();
+                        var flag =obj.DelEmployeeDetails(sqlconnection);
+                        if(flag) return;
+                        break;
                     case 5:
                         Console.Clear();
-                        obj = new Employee(_connectionString);
-                        //obj.Payslip();
+                        obj = new Employee();
                         obj.calculateSalary(sqlconnection);
                         break;
                     case 6: return;

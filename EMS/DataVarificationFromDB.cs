@@ -5,23 +5,15 @@ namespace EMS;
 
 class DataVarificationFromDB
 {
-    public string _connectionString { get; set; }
-
-   public DataVarificationFromDB(string _connectionString)
-    {
-        this._connectionString = _connectionString;
-    }
-
-
-
-    public int EmpId_assigning(SqlConnection sqlconnection)
+   
+    public int EmpIdAssigning(SqlConnection sqlconnection)
     {
         var tmp = 0;
         try
         {
             //var adapter = new SqlDataAdapter();
-            var query = @"SELECT MAX(EmpId) FROM Employee";
-            using (var cmd = new SqlCommand(query, sqlconnection))
+            var sqlQuery = @"SELECT MAX(EmpId) FROM Employee";
+            using (var cmd = new SqlCommand(sqlQuery, sqlconnection))
             {
                 var rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -46,23 +38,24 @@ class DataVarificationFromDB
 
 
 
-    public bool EmpId_check(double _empID, SqlConnection sqlconnection)
+    public bool EmpIdCheck(double _empID, SqlConnection sqlconnection)
     {
         try
         {
-            var adapter = new SqlDataAdapter();
-            var query = @"SELECT EmpId from Employee where empID = " + _empID;
-            var cmd = new SqlCommand(query, sqlconnection);
-            var rdr = cmd.ExecuteReader();
+            
+            var sqlQuery = @"SELECT EmpId from Employee where empID = " + _empID;
+            var cmd = new SqlCommand(sqlQuery, sqlconnection);
             double tmp = 0;
-            while (rdr.Read())
+            using (var rdr = cmd.ExecuteReader())
             {
-                var tmpID = rdr.GetInt32(0);
-                tmp = Convert.ToDouble(tmpID);
-                break;
+                while (rdr.Read())
+                {
+                    var tmpID = rdr.GetInt32(0);
+                    tmp = Convert.ToDouble(tmpID);
+                    break;
+                }
+                //rdr.Close();
             }
-
-            rdr.Close();
             if (tmp == _empID) return true;
             return false;
         }
@@ -75,30 +68,32 @@ class DataVarificationFromDB
         }
     }
 
-    public bool IsAdmin_count(string _userName, SqlConnection sqlconnection)
+    public bool AdminCount(string _userName, SqlConnection sqlconnection)
     {
         try
         {
             var _isAdmin = false;
             var adapter = new SqlDataAdapter();
-            var query = @"SELECT IsAdmin from Credentials";
-            var rdr = SqlQuery.ExecuteSelectQuery(query, sqlconnection);
-            var count = 0;
-            while (rdr.Read())
+            var sqlQuery = @"SELECT IsAdmin from Credentials";
+            using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
             {
-                _isAdmin = rdr.GetBoolean(0);
-                if (_isAdmin)
+                var count = 0;
+                while (rdr.Read())
                 {
-                    count++;
-                    if (count > 1)
+                    _isAdmin = rdr.GetBoolean(0);
+                    if (_isAdmin)
                     {
-                        rdr.Close();
-                        return true;
+                        count++;
+                        if (count > 1)
+                        {
+                            rdr.Close();
+                            return true;
+                        }
                     }
                 }
+                //rdr.Close();
             }
 
-            rdr.Close();
             return false;
         }
         catch (Exception ex)
@@ -110,19 +105,22 @@ class DataVarificationFromDB
         }
     }
 
-   public bool IsAdmin_Check(string _userName, SqlConnection sqlconnection)
+   public bool IsAdmin(string _userName, SqlConnection sqlconnection)
    {
         try
         {
-            var query = @"SELECT IsAdmin  from Credentials where Username = '" + _userName + "'";
-            var rdr = SqlQuery.ExecuteSelectQuery(query, sqlconnection);
-            while (rdr.Read())
+            var sqlQuery = @"SELECT IsAdmin  from Credentials where Username = '" + _userName + "'";
+            using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
             {
-                var flag = rdr.GetBoolean(0);
-                rdr.Close();
-                return flag;
+                while (rdr.Read())
+                {
+                    var flag = rdr.GetBoolean(0);
+                    rdr.Close();
+                    return flag;
+                }
+                //rdr.Close();
             }
-            rdr.Close();
+
             return false;
         }
         catch (Exception ex)

@@ -7,15 +7,16 @@ namespace EMS
 {
     internal class Manipulation : DataVarificationFromDB
     {
-        private string _connectionString { get; set; }
         private string _userName { get; set; }
+        private string _password { get; set; }
         private double _empID { get; set; }
         public SqlConnection sqlconnection { get; set; }
 
-        public Manipulation(double _empID, string _connectionString, SqlConnection sqlconnection) : base(_connectionString)
+        public Manipulation(string _userName,double _empID, SqlConnection sqlconnection) 
         {
+            this._userName = _userName;
             this._empID = _empID;
-            this._connectionString = _connectionString;
+            
             this.sqlconnection = sqlconnection;
         }
 
@@ -23,15 +24,12 @@ namespace EMS
         {
             try
             {
-                //Regex r = new Regex(@"^[0-9]{10}$");
-                var input = InputCheck.RegexCheck(r , s);
+                var input = InputCheck.RegexCheck(r, s);
                 input = "'" + input + "'";
-                var sql = "";
-                sql = @"update  Employee set " + s + " = " + input + " where empID = '" + _empID + "'";
-                SqlQuery.ExecuteUpdateQuery(sql, sqlconnection);
-                
-
-                Console.WriteLine("-------------->" + s + " Updated:\n-------------->Press Any key to return");
+                var sqlQuery = "";
+                sqlQuery = @"update  Employee set " + s + " = " + input + " where username = '" + _userName+ "'";
+                SqlQuery.ExecuteUpdateQuery(sqlQuery, sqlconnection);
+                Console.WriteLine("\n-------------->" + s + " Updated:\n-------------->Press Any key to return");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -44,62 +42,14 @@ namespace EMS
             }
         }
 
-        public void UpdateAdmin()
+        public void PasswordAndAdminChange(string column, string value)
         {
+            
             try
             {
-                
-                var query = @"SELECT userName from Employee where empID = " + _empID;
-                var rdr = SqlQuery.ExecuteSelectQuery(query, sqlconnection);
-                while (rdr.Read())
-                {
-                    _userName = rdr.GetString(0);
-                    break;
-                }
-
-                rdr.Close();
-                Console.Clear();
-                Console.WriteLine("Appoint as  : ");
-                short isAdmin = 0;
-                while (true)
-                {
-                    Console.WriteLine("1.Admin" + "\n2.Employee");
-                    var choice = InputCheck.NumericCheck("choice");
-                    switch (choice)
-                    {
-                        case 1:
-                            if (IsAdmin_count(_userName, sqlconnection))
-                            {
-                                isAdmin = 1;
-                                break;
-                            }
-
-                            Console.WriteLine("You are the single Admin :" + "Redirecting to previous menu ");
-                            break;
-                        case 2:
-                            if (IsAdmin_count(_userName, sqlconnection))
-                            {
-                                isAdmin = 0;
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("You are the single Admin :" + "Redirecting to previous menu ");
-                                Thread.Sleep(1500);
-                                return;
-                            }
-                        default:
-                            Console.Clear();
-                            Console.WriteLine("-------------->!!!Select from the above Option: -!!!!");
-                            continue;
-                    }
-
-                    break;
-                }
-                var sql = @"update  Credentials set IsAdmin = " + isAdmin + " where UserName = '" + _userName + "'";
-                SqlQuery.ExecuteUpdateQuery(sql, sqlconnection);
-                
-                Console.WriteLine("-------------->Admin type Updated:\n-------------->Press Any key to return");
+                var sqlQuery = @"update  Credentials set " + column + " = '" + value + "' where UserName = '" + _userName + "'";
+                SqlQuery.ExecuteUpdateQuery(sqlQuery, sqlconnection);
+                Console.WriteLine("\n--------------> "+column+" Updated:\n-------------->Press Any key to return");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -108,19 +58,78 @@ namespace EMS
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("Press any key to return...");
                 Console.ReadLine();
-                //return false;
             }
+        }
+
+        //just for the shake of polymorphism 
+        /*
+        public void PasswordAndAdminChange(string column, short value)
+        {
+            var sqlQuery = @"SELECT userName from Employee where empID = " + _empID;
+            using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
+            {
+                while (rdr.Read())
+                {
+                    _userName = rdr.GetString(0);
+                    break;
+                }
+                //rdr.Close();
+            }
+            sqlQuery = @"update  Credentials set " + column + " = " + value + " where UserName = '" + _userName + "'";
+            SqlQuery.ExecuteUpdateQuery(sqlQuery, sqlconnection);
+            
+        }*/
+        public void UpdateAdmin()
+        {
+            Console.Clear();
+            Console.WriteLine("Appoint as  : ");
+            short isAdmin = 0;
+            while (true)
+            {
+                Console.WriteLine("1.Admin" + "\n2.Employee");
+                var choice = InputCheck.NumericCheck("choice");
+                switch (choice)
+                {
+                    case 1:
+                        if (AdminCount(_userName, sqlconnection))
+                        {
+                            isAdmin = 1;
+                            break;
+                        }
+
+                        Console.WriteLine("You are the single Admin :" + "Redirecting to previous menu ");
+                        break;
+                    case 2:
+                        if (AdminCount(_userName, sqlconnection))
+                        {
+                            isAdmin = 0;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("You are the single Admin :" + "Redirecting to previous menu ");
+                            Thread.Sleep(1500);
+                            return;
+                        }
+                    default:
+                        Console.Clear();
+                        Console.WriteLine("-------------->!!!Select from the above Option: -!!!!");
+                        continue;
+                }
+
+                PasswordAndAdminChange("isAdmin", Convert.ToString(isAdmin));
+                break;
+            }
+            
         }
 
         public void Option()
         {
             while (true)
             {
-                Console.WriteLine(@"1.Update _mobile: :
-2.Update _email:
-3.Update Employee Type:
-4.Exit:
- ");
+                Console.WriteLine(" 1.Update _mobile: " + "\n 2.Update _email: " + "\n 3.Update Employee Type: " +
+                                  "\n 4.To change Password :" +
+                                  "\n 5.Exit: ");
                 var choice = InputCheck.NumericCheck("choice");
                 switch (choice)
                 {
@@ -138,7 +147,15 @@ namespace EMS
                         Console.Clear();
                         UpdateAdmin();
                         break;
-                    case 4: return;
+                    case 4:
+                        Console.Clear();
+                        Console.WriteLine("Create a new Password: ");
+                        _password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
+                        //_password = "'" + _password + "'";
+                        PasswordAndAdminChange("Password", _password);
+                        break;
+                    case 5:
+                        return;
                     default:
                         Console.WriteLine("-------------->!!! Select from the above Option !!!!");
                         Thread.Sleep(2000);

@@ -1,29 +1,47 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 namespace EMS;
 
 class SqlQuery
 {
-    public static SqlDataReader ExecuteSelectQuery(string query, SqlConnection con)
+    //function for executing Select Query...
+    public static SqlDataReader ExecuteSelectQuery(string sqlQuery, SqlConnection sqlconnection)
     {
-        var cmd = new SqlCommand(query, con);
+        var cmd = new SqlCommand(sqlQuery, sqlconnection);
         var rdr = cmd.ExecuteReader();
         return rdr;
     }
 
-    public static void ExecuteInsertQuery(string query, SqlConnection con)
+    //function for executing Insert Query...
+    public static void ExecuteInsertQuery(string sqlQuery, SqlConnection sqlconnection)
     {
-        var adapter = new SqlDataAdapter();
-        var cmd = new SqlCommand(query, con);
-        adapter.InsertCommand = new SqlCommand(query, con);
-        adapter.InsertCommand.ExecuteNonQuery();
+        using (var adapter = new SqlDataAdapter())
+        {
+            var cmd = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.InsertCommand = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.InsertCommand.ExecuteNonQuery();
+        }
     }
 
-    public static void ExecuteUpdateQuery(string query, SqlConnection con)
+    //function for executing Update Query...
+    public static void ExecuteUpdateQuery(string sqlQuery, SqlConnection sqlconnection)
     {
-        var adapter = new SqlDataAdapter();
-        var cmd = new SqlCommand(query, con);
-        adapter.UpdateCommand = new SqlCommand(query, con);
-        adapter.UpdateCommand.ExecuteNonQuery();
+        using (var adapter = new SqlDataAdapter())
+        {
+            var cmd = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.UpdateCommand = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.UpdateCommand.ExecuteNonQuery();
+        }
+    }
+
+    public static void ExecuteDeleteQuery(String sqlQuery, SqlConnection sqlconnection)
+    {
+        using (var adapter = new SqlDataAdapter())
+        {
+            var cmd = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.DeleteCommand = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.DeleteCommand.ExecuteNonQuery();
+        }
     }
 }

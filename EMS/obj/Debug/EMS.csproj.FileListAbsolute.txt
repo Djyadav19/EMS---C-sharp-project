@@ -33,3 +33,5 @@ E:\C# training\EMS\EMS\EMS\bin\Debug\System.Security.AccessControl.xml
 E:\C# training\EMS\EMS\EMS\bin\Debug\System.Security.Permissions.xml
 E:\C# training\EMS\EMS\EMS\bin\Debug\System.Security.Principal.Windows.xml
 E:\C# training\EMS\EMS\EMS\obj\Debug\EMS.csproj.CopyComplete
+E:\C# training\EMS\EMS\EMS\bin\Debug\ConsoleTables.dll
+E:\C# training\EMS\EMS\EMS\bin\Debug\ConsoleTables.pdb
