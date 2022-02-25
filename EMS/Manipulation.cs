@@ -14,7 +14,7 @@ namespace EMS
 
         public Manipulation(double _empID, string _connectionString, SqlConnection sqlconnection) : base(_connectionString)
         {
-            _empID = _empID;
+            this._empID = _empID;
             this._connectionString = _connectionString;
             this.sqlconnection = sqlconnection;
         }
@@ -96,8 +96,7 @@ namespace EMS
 
                     break;
                 }
-                var sql = "";
-                sql = @"update  Credentials set IsAdmin = " + isAdmin + " where UserName = '" + _userName + "'";
+                var sql = @"update  Credentials set IsAdmin = " + isAdmin + " where UserName = '" + _userName + "'";
                 SqlQuery.ExecuteUpdateQuery(sql, sqlconnection);
                 
                 Console.WriteLine("-------------->Admin type Updated:\n-------------->Press Any key to return");

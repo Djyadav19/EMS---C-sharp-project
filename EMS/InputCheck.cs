@@ -132,10 +132,11 @@ namespace EMS
             DateTime i = default;
             while (!check)
             {
-                var r = new Regex(@"^\d{ 4}\-(0[1 - 9] | 1[012])\-(0[1 - 9] |[12][0 - 9] | 3[01])$");
+                var r = new Regex(@"^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$");
                 var input = RegexCheck(r, "Date of Joining");
                 check = DateTime.TryParse(input, out i);
-                if (check && i < DateTime.Now)
+                var minDate = DateTime.Now.AddYears(-59);
+                if (check && (i <= DateTime.Now && i>minDate))
                 {
                     break;
                 }

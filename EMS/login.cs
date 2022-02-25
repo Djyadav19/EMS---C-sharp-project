@@ -16,15 +16,7 @@ namespace EMS
             this._connectionString = _connectionString;
         }
 
-        public short menu()
-        {
-            Console.WriteLine("\n-------------->press:" + "\n-------------->1. Re-enter _userName and _password: " +
-                              "\n-------------->2.Press any key to Return previous menu:");
-            short check;
-            var hello = short.TryParse(Console.ReadLine(), out check);
-            return check;
-        }
-
+        
         public void logging()
         {
             while (true)
@@ -79,7 +71,10 @@ namespace EMS
 
                 Console.WriteLine(
                     "\n-------------->!!!Wrong _userName _password!!!!<--------------\n--------------> In case Forget _userName and _password plz contact Admin<--------------  ");
-                if (menu() == 1) continue;
+                Console.WriteLine("\n-------------->press:" + "\n-------------->1. Re-enter _userName and _password: " +
+                                  "\n-------------->2.Press any key to Return previous menu:");
+                var check = Console.ReadLine();
+                if (check == "1") continue;
                 break;
             }
         }

@@ -4,11 +4,12 @@ using System.Threading;
 
 namespace EMS
 {
-    class AdminLogin : DataVarificationFromDB
+    class AdminLogin 
     {
         //public SqlConnection sqlconnection { get; set; }
+        private string _connectionString { get; set; }
 
-        public AdminLogin(string _connectionString) : base(_connectionString)
+        public AdminLogin(string _connectionString) //: base(_connectionString)
         {
             this._connectionString = _connectionString;
         }
@@ -38,7 +39,8 @@ namespace EMS
                         Console.Clear();
                         Console.WriteLine("-------------->Enter EMP ID To Update the details: ");
                         var _empID = InputCheck.NumericCheck("Emp Id");
-                        if (EmpId_check(_empID, sqlconnection))
+                        var obj2 = new DataVarificationFromDB(_connectionString);
+                        if (obj2.EmpId_check(_empID, sqlconnection))
                         {
                             var obj1 = new Manipulation(_empID, _connectionString, sqlconnection);
                             obj1.Option();
@@ -48,8 +50,8 @@ namespace EMS
                             Console.WriteLine("-------------->_empID Is not present in Database: ");
                             Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
                                               "\n-------------->2.Press any key to Return previous menu:");
-                            var check = InputCheck.NumericCheck("Choice");
-                            if (check == 1) goto case 2;
+                            var check = Console.ReadLine();
+                            if (check == "1") goto case 2;
                         }
 
                         break;

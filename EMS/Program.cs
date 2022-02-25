@@ -8,10 +8,19 @@ namespace EMS
     {
         static void Main(string[] args)
         {
-            var _connectionString =
-                (@"Data Source=DESKTOP-29CLIQB\SQLEXPRESS;Initial Catalog=EMS;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
-            var connectionString1 =
-                (@"Data Source=DESKTOP-29CLIQB\SQLEXPRESS;Initial Catalog=EMS1;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+
+            
+
+
+            var _connectionString = ConfigurationManager.ConnectionStrings["Test"].ConnectionString;
+
+            var connectionString1 = ConfigurationManager.ConnectionStrings["Test1"].ConnectionString;
+
+
+
+            
+            //Configuratio
+
             while (true)
             {
                 Console.Clear();

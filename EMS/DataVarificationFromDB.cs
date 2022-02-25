@@ -7,7 +7,7 @@ class DataVarificationFromDB
 {
     public string _connectionString { get; set; }
 
-    public DataVarificationFromDB(string _connectionString)
+   public DataVarificationFromDB(string _connectionString)
     {
         this._connectionString = _connectionString;
     }

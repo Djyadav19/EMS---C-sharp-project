@@ -40,19 +40,19 @@ namespace EMS
                 Console.WriteLine("Your Emp ID is : " + _empID + "\nPlease Note It");
                 Console.WriteLine("Enter First Name: ");
                 Regex r;
-                r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]+[a-z0-9A-Z]{1,30}$");
+                r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
                 ;
                 _firstName = InputCheck.RegexCheck(r," First Name");
                 Console.WriteLine("Enter Last Name: ");
-                r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]+[a-z0-9A-Z]{1,30}$");
+                r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
                 _lastName = InputCheck.RegexCheck(r, " Last name");
                 Console.WriteLine("Create a _userName: ");
                 while (true)
                 {
                     string checkUserName = null;
                     Console.WriteLine("Enter _userName : \n" +
-                                      "Size of _userName must be between greater than 2 and smaller than 29: ");
-                    r = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,29}$");
+                                      "Size of _userName must be between greater than 3 and smaller than 29: ");
+                    r = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,30}$");
                     var input = InputCheck.RegexCheck(r," Username ");
                     //adapter = new SqlDataAdapter();
                     var query = @"SELECT userName from Employee where userName = '" + input + "'";
@@ -150,8 +150,8 @@ namespace EMS
                     Console.WriteLine("-------------->_empID Is not present in Database: ");
                     Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
                                       "\n-------------->2.Press any key to Return previous menu:");
-                    var check = InputCheck.NumericCheck("choice");
-                    if (check == 1) continue;
+                    var check = Console.ReadLine();
+                    if (check == "1") continue;
                     break;
                 }
             }
@@ -232,8 +232,8 @@ namespace EMS
                     Console.WriteLine("-------------->This _empID is not present in Data base :");
                     Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
                                       "\n-------------->2.Press any key to Return previous menu:");
-                    var check = InputCheck.NumericCheck("Choice");
-                    if (check == 1) continue;
+                    var check = Console.ReadLine();
+                    if (check == "1") continue;
                     break;
                 }
             }
@@ -283,7 +283,7 @@ namespace EMS
                     {
                         Console.WriteLine("Enter the Number of working days: ");
                         var wrokingDays = InputCheck.NumericCheck("Days");
-                        var query = @"SELECT DailyWages and username from Employee where empID = " + _empID;
+                        var query = @"SELECT Username, DailyWages from Employee where empID = " + _empID;
                         var rdr = SqlQuery.ExecuteSelectQuery(query, sqlconnection);
                         double tmp = 0;
                         while (rdr.Read())
@@ -317,8 +317,8 @@ namespace EMS
                     Console.WriteLine("-------------->_empID Is not present in Database: ");
                     Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
                                       "\n-------------->2.Press any key to Return previous menu:");
-                    var check = InputCheck.NumericCheck("Choice");
-                    if (check == 1) continue;
+                    var check = Console.ReadLine();
+                    if (check == "1") continue;
                     break;
                 }
             }
