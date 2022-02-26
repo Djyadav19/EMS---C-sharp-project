@@ -89,11 +89,14 @@ namespace EMS
                 Console.Write("\nEnter Mobile : ");
                 r = new Regex(@"^[0-9]{10}$");
                 _mobile = InputCheck.RegexCheck(r," Mobile");
+
                 Console.Write("\nEnter Email: ");
                 r = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
                 _email = InputCheck.RegexCheck(r," Email Id ");
+
                 Console.Write("\nSelect the Type of Employee\n");
                 _isAdmin = InputCheck.IsBoolean();
+
                 var date = "'" + Convert.ToString(_dojDateTime) + "'";
 
                 //sqlQuery sqlQuery for inserting Data in DB

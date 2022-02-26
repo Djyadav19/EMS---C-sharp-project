@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -74,7 +73,7 @@ namespace EMS
         public static string ComputeSha256Hash(string rawData)
         {
             
-            using (SHA256 sha256Hash = SHA256.Create())
+            using (var sha256Hash = SHA256.Create())
             {
                 var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
                 var builder = new StringBuilder();
