@@ -16,12 +16,13 @@ namespace EMS
             this._userName = _userName;
             
         }
+        
 
         public void calculateSalary(SqlConnection sqlconnection)
         {
             try
             {
-                Console.WriteLine("-------------->Enter the Number of working days: ");
+                Console.Write(" Enter the Number of working days:  ");
                 var wrokingDays = InputCheck.NumericCheck(" Working Days ");
                 string sqlQuery = @"SELECT DailyWages from Employee where userName = " + "'" + _userName + "'";
                 using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
@@ -35,8 +36,8 @@ namespace EMS
                     //rdr.Close();
                 }
 
-                Console.WriteLine("-------------->_salary of this Month : " + _salary +
-                                  "\n-------------->Press Any key to return");
+                Console.WriteLine("\nSalary of this Month : " + _salary +
+                                  "\n\nPress Any key to return");
                 Console.ReadLine();
             }
             catch (Exception ex)
@@ -69,7 +70,7 @@ namespace EMS
                     Console.Clear();
                     Console.WriteLine(table);
                 }
-                Console.WriteLine("\n-------------->Press Any key to return");
+                Console.WriteLine("\nPress Any key to return");
                 Console.ReadLine();
             }
             catch (Exception ex)
@@ -103,7 +104,7 @@ namespace EMS
                         Console.Clear();
                         return;
                     default:
-                        Console.WriteLine("-------------->!!!Select from the above Option: -!!!!");
+                        Console.WriteLine("!!! Select from the above Option !!!");
                         Thread.Sleep(2000);
                         break;
                 }

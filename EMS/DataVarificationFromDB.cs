@@ -11,7 +11,6 @@ class DataVarificationFromDB
         var tmp = 0;
         try
         {
-            //var adapter = new SqlDataAdapter();
             var sqlQuery = @"SELECT MAX(EmpId) FROM Employee";
             using (var cmd = new SqlCommand(sqlQuery, sqlconnection))
             {
@@ -44,20 +43,23 @@ class DataVarificationFromDB
         {
             
             var sqlQuery = @"SELECT EmpId from Employee where empID = " + _empID;
-            var cmd = new SqlCommand(sqlQuery, sqlconnection);
-            double tmp = 0;
-            using (var rdr = cmd.ExecuteReader())
+            using (var cmd = new SqlCommand(sqlQuery, sqlconnection))
             {
-                while (rdr.Read())
+                double tmp = 0;
+                using (var rdr = cmd.ExecuteReader())
                 {
-                    var tmpID = rdr.GetInt32(0);
-                    tmp = Convert.ToDouble(tmpID);
-                    break;
+                    while (rdr.Read())
+                    {
+                        var tmpID = rdr.GetInt32(0);
+                        tmp = Convert.ToDouble(tmpID);
+                        break;
+                    }
+                    //rdr.Close();
                 }
-                //rdr.Close();
+                return tmp == _empID;
             }
-            if (tmp == _empID) return true;
-            return false;
+
+            
         }
         catch (Exception ex)
         {
@@ -72,21 +74,19 @@ class DataVarificationFromDB
     {
         try
         {
-            var _isAdmin = false;
-            var adapter = new SqlDataAdapter();
             var sqlQuery = @"SELECT IsAdmin from Credentials";
             using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
             {
                 var count = 0;
                 while (rdr.Read())
                 {
-                    _isAdmin = rdr.GetBoolean(0);
-                    if (_isAdmin)
+                    var isAdmin = rdr.GetBoolean(0);
+                    if (isAdmin)
                     {
                         count++;
                         if (count > 1)
                         {
-                            rdr.Close();
+                            //rdr.Close();
                             return true;
                         }
                     }
@@ -115,7 +115,7 @@ class DataVarificationFromDB
                 while (rdr.Read())
                 {
                     var flag = rdr.GetBoolean(0);
-                    rdr.Close();
+                    //rdr.Close();
                     return flag;
                 }
                 //rdr.Close();

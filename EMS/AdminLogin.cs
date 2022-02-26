@@ -14,7 +14,7 @@ namespace EMS
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("-------------->Enter EMP ID To Update the details: ");
+                Console.Write("Enter EMP ID To Update the details: ");
                 var _empID = InputCheck.NumericCheck("Emp Id");
                 var obj2 = new DataVarificationFromDB();
                 if (obj2.EmpIdCheck(_empID, sqlconnection))
@@ -45,9 +45,9 @@ namespace EMS
                 }
                 else
                 {
-                    Console.WriteLine("-------------->_empID Is not present in Database: ");
-                    Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
-                                      "\n-------------->2.Press any key to Return previous menu:");
+                    Console.WriteLine("!!!Emp ID Is not present in Database: !!!");
+                    Console.WriteLine("press:" + "\n1. Re-enter _empID: " +
+                                      "\n2.Press any key to Return previous menu:");
                     var check = Console.ReadLine();
                     if (check == "1") continue;
                 }
@@ -61,7 +61,7 @@ namespace EMS
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" ---->Logged in As Admin ");
+                Console.WriteLine(" ---->Logged in As Admin<---- ");
                 Console.WriteLine("\n1.To add an Employee: "+
                                   "\n2.To Manipulate Employee Details: "+
                                   "\n3.To Retrieve  Employee Details: "+
@@ -99,7 +99,7 @@ namespace EMS
                         break;
                     case 6: return;
                     default:
-                        Console.WriteLine("-------------->!!! Select From the above Option !!!!");
+                        Console.WriteLine("!!! Select From the above Option !!!!");
                         Thread.Sleep(2000);
                         break;
                 }

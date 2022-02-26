@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -21,7 +22,7 @@ namespace EMS
                     case 2: return false;
                     default:
                         Console.Clear();
-                        Console.WriteLine("-------------->!!!Select from the Given Option !!!!");
+                        Console.WriteLine("!!!Select from the Given Option !!!!");
                         break;
                 }
             }
@@ -62,7 +63,7 @@ namespace EMS
 
                 if (string.IsNullOrWhiteSpace(_password))
                 {
-                    Console.WriteLine("_password Can't be NuLL");
+                    Console.WriteLine("Password Can't be NuLL");
                     continue;
                 }
 
@@ -72,11 +73,12 @@ namespace EMS
 
         public static string ComputeSha256Hash(string rawData)
         {
+            
             using (SHA256 sha256Hash = SHA256.Create())
             {
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
+                var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+                var builder = new StringBuilder();
+                for (var i = 0; i < bytes.Length; i++)
                 {
                     builder.Append(bytes[i].ToString("x2"));
                 }
@@ -92,35 +94,53 @@ namespace EMS
                 var input = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    Console.WriteLine(
-                        "-------------->Wrong input Type\n-------------->Try Again\n-------------->Enter :" + s);
+                    Console.Write(
+                        "\n!!!Wrong input Typ!!!e\n Try Again\n Enter " + s + ":        ");
                     continue;
                 }
 
                 return input;
             }
         }
-
-        public static double NumericCheck(string s)
+        public static double DoubleCheck(string s)
         {
             var check = false;
-            double i = default;
+            var i = 0.0;
             while (!check)
             {
                 var input = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    Console.WriteLine(
-                        "-------------->Wrong input Type\n-------------->Enter a Numeric Number:\n-------------->Enter :" +
-                        s);
+                    Console.Write("\n!!!Wrong input Type\n Enter a Numeric Number\n Enter " + s + ":      ");
+                    continue;
+
+                }
+                check = double.TryParse(input, out i);
+                if (check && i > 0.0) 
+                    break;
+                check = false;
+                Console.Write("\n!!!Wrong input Type\n Enter a Numeric Number\n Enter " + s + ":      ");
+            }
+
+            return i;
+        }
+        public static int NumericCheck(string s)
+        {
+            var check = false;
+            var i = 0;
+            while (!check)
+            {
+                var input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.Write("\n!!!Wrong input Type\n Enter a Numeric Number:\n Enter " + s + ":      ");
                     continue;
                 }
 
-                check = double.TryParse(input, out i);
+                check = int.TryParse(input, out i);
                 if (check && i >= 0) break;
-                Console.WriteLine(
-                    "-------------->Wrong input Type\n-------------->Enter a Numeric Number:\n-------------->Enter :" +
-                    s);
+                check = false;
+                Console.Write("\n!!!Wrong input Type\n Enter a Numeric Number:\n Enter " + s + ":      ");
             }
 
             return i;
@@ -142,7 +162,7 @@ namespace EMS
                 }
 
                 check = false;
-                Console.WriteLine("-------------->Wrong Input Type...Enter Date time");
+                Console.Write("\n!!!Wrong Input Type!!! \n Enter Date time: ");
             }
 
             return i;
@@ -160,7 +180,7 @@ namespace EMS
                     return input;
                 }
 
-                Console.WriteLine("Wrong Input Type:- \nEnter : " + s);
+                Console.Write("\n!!!Wrong Input Type!!! \n Enter " + s +" :       ");
             }
         }
     }

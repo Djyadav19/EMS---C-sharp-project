@@ -23,9 +23,9 @@ namespace EMS
                 {
                     Console.Clear();
                     Console.WriteLine("Login :  ");
-                    Console.WriteLine("Enter User Name :");
+                    Console.Write("Enter User Name : ");
                     var _userName = InputCheck.StringCheck("User Name");
-                    Console.WriteLine("Enter Password :");
+                    Console.Write("Enter Password : ");
 
                     //Inputcheck.ReadPassword() to hide the password from the screen...
                     //Inputcheck.ComputeSha256() for generating sha256 of the password...
@@ -71,9 +71,9 @@ namespace EMS
                 }
 
                 Console.WriteLine(
-                    "\n-------------->!!!Wrong _userName _password!!!!<--------------\n--------------> In case Forget _userName and _password plz contact Admin<--------------  ");
-                Console.WriteLine("\n-------------->press:" + "\n-------------->1. Re-enter _userName and _password: " +
-                                  "\n-------------->2.Press any key to Return previous menu:");
+                    "\n!!!Wrong User Name Password!!!\n In case Forget User Name and Password plz contact Admin ");
+                Console.WriteLine("\npress:" + "\n1. Re-enter User Name and Password: " +
+                                  "\n2.Press any key to Return previous menu:");
                 var check = Console.ReadLine();
                 if (check == "1") continue;
                 break;

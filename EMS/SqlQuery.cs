@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 
 namespace EMS;
 
@@ -34,7 +35,8 @@ class SqlQuery
             adapter.UpdateCommand.ExecuteNonQuery();
         }
     }
-
+    
+    //function for executing Delete Query...
     public static void ExecuteDeleteQuery(String sqlQuery, SqlConnection sqlconnection)
     {
         using (var adapter = new SqlDataAdapter())

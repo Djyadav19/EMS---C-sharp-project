@@ -10,7 +10,7 @@ namespace EMS
     internal class Employee : DataVarificationFromDB
     {
         private string _connectionString { get; set; }
-        private double _empID { get; set; }
+        private int _empID { get; set; }
         private string _firstName { get; set; }
         private string _lastName { get; set; }
         private string _userName { get; set; }
@@ -19,7 +19,7 @@ namespace EMS
         private string _mobile { get; set; }
         private string _email { get; set; }
         private double _salary;
-        private string _montlyFixedSalary;
+        private double _montlyFixedSalary;
         private bool _isAdmin { get; set; }
         private string _password;
 
@@ -31,21 +31,23 @@ namespace EMS
                 Console.Clear();
                 _empID = EmpIdAssigning(sqlconnection);
                 Console.WriteLine("Your Emp ID is : " + _empID + "\nPlease Note It");
-                Console.WriteLine("Enter First Name: ");
+
+                Console.Write("Enter First Name: ");
                 var r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
-                ;
                 _firstName = InputCheck.RegexCheck(r," First Name");
-                Console.WriteLine("Enter Last Name: ");
+
+                Console.Write("\nEnter Last Name: ");
                 r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
                 _lastName = InputCheck.RegexCheck(r, " Last name");
-                Console.WriteLine("Create a _userName: ");
+
+                Console.Write("\nCreate a User Name: ");
                 string sqlQuery;
                 while (true)
                 {
                     string checkUserName = null;
-                    Console.WriteLine("Enter _userName : \n" +
-                                      "Size of _userName must be between greater than 3 and smaller than 29: ");
-                    r = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,30}$");
+                    Console.WriteLine("Enter User Name : \n" +
+                                      "( *** Size of User Name must be between greater than 3 and smaller than 20 *** )");
+                    r = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,20}$");
                     var input = InputCheck.RegexCheck(r," Username ");
                     sqlQuery = @"SELECT userName from Employee where userName = '" + input + "'";
                     using (var cmd = new SqlCommand(sqlQuery, sqlconnection))
@@ -64,7 +66,7 @@ namespace EMS
                     if (input == checkUserName)
                     {
                         Console.WriteLine(
-                            "-------------->!!! _userName already Exists !!!\n-------------->Please Use a different _userName:   ");
+                            "!!! User Name already Exists !!! -------------->Please Use a different  User Name:   ");
                         continue;
                     }
 
@@ -72,26 +74,30 @@ namespace EMS
                     break;
                 }
 
-                Console.WriteLine("Create a _password: ");
+                Console.Write("\nCreate a Password: ");
                 _password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
-                Console.WriteLine("\nAppoint _position : ");
+
+                Console.Write("\nAppoint Position : ");
                 _position = InputCheck.StringCheck("_position ");
-                Console.WriteLine("Enter Date Of Joining: yyyy-MM-dd ");
+
+                Console.Write("\nEnter Date Of Joining:*** yyyy-MM-dd *** ");
                 _dojDateTime = InputCheck.DateCheck();
-                Console.WriteLine("Enter Per_month _salary : ");
-                _montlyFixedSalary = Convert.ToString(InputCheck.NumericCheck("Per Month _salary"));
-                Console.WriteLine("Enter _mobile : ");
+
+                Console.Write("\nEnter Per_month Salary : ");
+                _montlyFixedSalary = InputCheck.DoubleCheck("Per Month Salary");
+
+                Console.Write("\nEnter Mobile : ");
                 r = new Regex(@"^[0-9]{10}$");
                 _mobile = InputCheck.RegexCheck(r," Mobile");
-                Console.WriteLine("Enter _email: ");
+                Console.Write("\nEnter Email: ");
                 r = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
                 _email = InputCheck.RegexCheck(r," Email Id ");
-                Console.WriteLine("Select the Type of Employee\n");
+                Console.Write("\nSelect the Type of Employee\n");
                 _isAdmin = InputCheck.IsBoolean();
                 var date = "'" + Convert.ToString(_dojDateTime) + "'";
 
                 //sqlQuery sqlQuery for inserting Data in DB
-                sqlQuery = @"insert into Employee values (" + Convert.ToString(_empID) + "," + "'" + _firstName + "'" + "," + "'" + _lastName + "'" +
+                sqlQuery = @"insert into Employee values (" + _empID + "," + "'" + _firstName + "'" + "," + "'" + _lastName + "'" +
                            "," + "'" + _userName + "'" + "," + "'" + _position + "'" + "," + date + "," + "'" + _mobile + "'" + "," + "'" + _email + "'" + "," + "NULL" + "," +
                            _montlyFixedSalary + ")";
                 //calling Function to execute the query...
@@ -119,9 +125,9 @@ namespace EMS
                 while (true)
                 {
                     string check;
-                    Console.WriteLine("-------------->press:" + "\n-------------->1.To display All Employee Details :  " +
-                                      "\n-------------->2.Enter Emp ID to find the details :" +
-                                      "\n-------------->Press any key to Return previous menu:");
+                    Console.WriteLine("press:" + "\n1.To display All Employee Details :  " +
+                                      "\n2.Enter Emp ID to find the details :" +
+                                      "\nPress any key to Return previous menu:");
                     check = Console.ReadLine();
                     AllDisplay:
                     if (check == "1")
@@ -145,7 +151,7 @@ namespace EMS
                             Console.WriteLine(table);
                             
                         }
-                        Console.WriteLine("\n-------------->Press any key to Return previous menu:");
+                        Console.Write("\nPress any key to Return previous menu:");
                         Console.ReadLine();
                         break;
                     }
@@ -154,7 +160,7 @@ namespace EMS
                     {
                         SingleDisplay:
                         Console.Clear();
-                        Console.WriteLine("Enter EMP ID To find the details: ");
+                        Console.Write("\nEnter EMP ID To find the details: ");
                         _empID = InputCheck.NumericCheck("Emp Id");
 
                         if (EmpIdCheck(_empID, sqlconnection))
@@ -175,10 +181,10 @@ namespace EMS
                                 Console.Clear();
                                 Console.WriteLine(table);
                             }
-                            Console.WriteLine("-------------->press:" +
-                                              "\n-------------->1. Re-enter Another EmpID : " +
-                                              "\n-------------->2. To display All Employee Details :" +
-                                              "\n-------------->Press any key to Return previous menu:");
+                            Console.WriteLine("\npress:" +
+                                              "\n1. Re-enter Another EmpID : " +
+                                              "\n2. To display All Employee Details :" +
+                                              "\n   Press any key to Return previous menu:");
                             check = Console.ReadLine();
                             if (check == "1") goto SingleDisplay;
                             if (check == "2")
@@ -189,11 +195,11 @@ namespace EMS
                             }
                             break;
                         }
-                        Console.WriteLine("EmpId doesn't exists: ");
-                        Console.WriteLine("-------------->press:" +
-                                          "\n-------------->1. Re-enter Another EmpID : " +
-                                          "\n-------------->2. To display All Employee Details :" +
-                                          "\n-------------->Press any key to Return previous menu:");
+                        Console.WriteLine("!!!EmpId doesn't exists!!! ");
+                        Console.WriteLine("press:" +
+                                          "\n1. Re-enter Another EmpID : " +
+                                          "\n2. To display All Employee Details :" +
+                                          "\n   Press any key to Return previous menu:");
                         check = Console.ReadLine();
                         if (check == "1") goto SingleDisplay;
                         if (check == "2")
@@ -202,8 +208,8 @@ namespace EMS
                             goto AllDisplay;
 
                         }
-                        break;
                     }
+                    break;
                 }
             }
             catch (Exception ex)
@@ -225,8 +231,8 @@ namespace EMS
                 _userName = "'" + _userName + "'";
                 sqlQuery = @"DELETE from Credentials where userName = " + _userName;
                 SqlQuery.ExecuteDeleteQuery(sqlQuery, sqlconnection);
-                Console.WriteLine("\n-------------->Deleted Successfully\n-------------->Press Any key to return");
-                Console.ReadLine();
+                Console.WriteLine("\n *** Deleted Successfully ***");
+                
             }
             catch (Exception ex)
             {
@@ -243,9 +249,11 @@ namespace EMS
             {
                 while (true)
                 {
+                    DeleteAgain:
                     Console.Clear();
-                    Console.WriteLine("Enter EMP ID To Delete the details: ");
+                    Console.Write("Enter EMP ID To Delete the details: ");
                     _empID = InputCheck.NumericCheck("Emp Id");
+                    string check;
                     if (EmpIdCheck(_empID, sqlconnection))
                     {
                         var sqlQuery = @"SELECT userName from Employee where empID = " + _empID;
@@ -264,22 +272,34 @@ namespace EMS
                             if (AdminCount(_userName, sqlconnection))
                             {
                                 DeleteQueryExecution(sqlconnection);
+                                Console.WriteLine("\npress:" +
+                                                  "\n1. To Delete another : " +
+                                                  "\n   Press any key to Return previous menu:");
+                                check = Console.ReadLine();
+                                if (check == "1") goto DeleteAgain;
                                 return true;
                             }
 
-                            Console.WriteLine("-------------->Sir !!! You are the single Admin: ");
-                            Thread.Sleep(3000);
+                            Console.WriteLine("Sir !!! You are the single Admin:!!!\n***First Appoint anyone else as Admin*** \nRedirecting to the Previous menu: ");
+                            Thread.Sleep(2000);
                             break;
                         }
 
                         DeleteQueryExecution(sqlconnection);
-                        
+                        Console.WriteLine("\npress:" +
+                                          "\n1. To Delete another : " +
+                                          "\n   Press any key to Return previous menu:");
+                        check = Console.ReadLine();
+                        if (check == "1") goto DeleteAgain;
+                        return false;
+
                     }
 
-                    Console.WriteLine("-------------->This _empID is not present in Data base :");
-                    Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
-                                      "\n-------------->2.Press any key to Return previous menu:");
-                    var check = Console.ReadLine();
+                    Console.WriteLine("!!!This Emp ID is not present in Data base !!!");
+                    Console.WriteLine("\npress:" + 
+                                      "\n1. Re-enter _empID: " +
+                                      "\n   Press any key to Return previous menu:");
+                    check = Console.ReadLine();
                     if (check == "1") continue;
                     break;
                 }
@@ -325,12 +345,12 @@ namespace EMS
                 while (true)
                 {
                     Console.Clear();
-                    Console.WriteLine("Enter EMP ID To calculate the _salary: ");
+                    Console.Write("Enter EMP ID To calculate the _salary: ");
                     _empID = InputCheck.NumericCheck("Emp Id");
                     if (EmpIdCheck(_empID, sqlconnection))
                     {
-                        Console.WriteLine("Enter the Number of working days: ");
-                        var wrokingDays = InputCheck.NumericCheck("Days");
+                        Console.Write("\nEnter the Number of working days: ");
+                        var wrokingDays = InputCheck.NumericCheck(" Days ");
                         var sqlQuery = @"SELECT Username, DailyWages from Employee where empID = " + _empID;
                         double tmp = 0;
                         using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
@@ -365,9 +385,10 @@ namespace EMS
                         break;
                     }
 
-                    Console.WriteLine("-------------->_empID Is not present in Database: ");
-                    Console.WriteLine("-------------->press:" + "\n-------------->1. Re-enter _empID: " +
-                                      "\n-------------->2.Press any key to Return previous menu:");
+                    Console.WriteLine("!!! Emp ID Is not present in Database !!! ");
+                    Console.WriteLine("press:" + 
+                                      "\n1. Re-enter _empID: " +
+                                      "\n   Press any key to Return previous menu:");
                     var check = Console.ReadLine();
                     if (check == "1") continue;
                     break;

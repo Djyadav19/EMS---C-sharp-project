@@ -29,7 +29,7 @@ namespace EMS
                 var sqlQuery = "";
                 sqlQuery = @"update  Employee set " + s + " = " + input + " where username = '" + _userName+ "'";
                 SqlQuery.ExecuteUpdateQuery(sqlQuery, sqlconnection);
-                Console.WriteLine("\n-------------->" + s + " Updated:\n-------------->Press Any key to return");
+                Console.WriteLine("\n " + s + " Updated Successfully  \n Press Any key to return");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -42,14 +42,14 @@ namespace EMS
             }
         }
 
-        public void PasswordAndAdminChange(string column, string value)
+        public void PasswordAndAdminChange(string column, string value,string displayChangeType)
         {
             
             try
             {
                 var sqlQuery = @"update  Credentials set " + column + " = '" + value + "' where UserName = '" + _userName + "'";
                 SqlQuery.ExecuteUpdateQuery(sqlQuery, sqlconnection);
-                Console.WriteLine("\n--------------> "+column+" Updated:\n-------------->Press Any key to return");
+                Console.WriteLine("\n "+ displayChangeType +" Updated Successfully \n Press Any key to return");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -91,33 +91,33 @@ namespace EMS
                 switch (choice)
                 {
                     case 1:
-                        if (AdminCount(_userName, sqlconnection))
+                        isAdmin = 1;
+                        break;
+                        
+                    case 2:
+                        if (AdminCount(_userName, sqlconnection) && IsAdmin(_userName,sqlconnection))
                         {
-                            isAdmin = 1;
+                            isAdmin = 0;
                             break;
                         }
-
-                        Console.WriteLine("You are the single Admin :" + "Redirecting to previous menu ");
-                        break;
-                    case 2:
-                        if (AdminCount(_userName, sqlconnection))
+                        else if (!IsAdmin(_userName, sqlconnection))
                         {
                             isAdmin = 0;
                             break;
                         }
                         else
                         {
-                            Console.WriteLine("You are the single Admin :" + "Redirecting to previous menu ");
+                            Console.WriteLine("You are the single Admin :" + "\nRedirecting to previous menu ");
                             Thread.Sleep(1500);
                             return;
                         }
                     default:
                         Console.Clear();
-                        Console.WriteLine("-------------->!!!Select from the above Option: -!!!!");
+                        Console.WriteLine("!!! Select from the above Option !!!!");
                         continue;
                 }
 
-                PasswordAndAdminChange("isAdmin", Convert.ToString(isAdmin));
+                PasswordAndAdminChange("isAdmin", Convert.ToString(isAdmin),"Employee Type");
                 break;
             }
             
@@ -135,12 +135,12 @@ namespace EMS
                 {
                     case 1:
                         Console.Clear();
-                        Console.WriteLine("Enter _mobile : ");
+                        Console.Write("\nEnter Mobile : ");
                         UpdateMobile_Email("Mobile", new Regex(@"^[0-9]{10}$"));
                         break;
                     case 2:
                         Console.Clear();
-                        Console.WriteLine("Enter EmailID : ");
+                        Console.Write("\nEnter EmailID : ");
                         UpdateMobile_Email("EmailID", new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"));
                         break;
                     case 3:
@@ -149,15 +149,15 @@ namespace EMS
                         break;
                     case 4:
                         Console.Clear();
-                        Console.WriteLine("Create a new Password: ");
+                        Console.Write("\nCreate a new Password: ");
                         _password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
                         //_password = "'" + _password + "'";
-                        PasswordAndAdminChange("Password", _password);
+                        PasswordAndAdminChange("Password", _password,"Password");
                         break;
                     case 5:
                         return;
                     default:
-                        Console.WriteLine("-------------->!!! Select from the above Option !!!!");
+                        Console.Write("!!! Select from the above Option !!!");
                         Thread.Sleep(2000);
                         break;
                 }

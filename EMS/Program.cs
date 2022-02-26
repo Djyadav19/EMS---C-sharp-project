@@ -33,7 +33,7 @@ namespace EMS
                         return;
                     default:
                         Console.Clear();
-                        Console.WriteLine("-------------->!!!Select from the above Option: -!!!!");
+                        Console.WriteLine("!!! Select from the above Option !!!");
                         Thread.Sleep(1000);
                         break;
                 }
