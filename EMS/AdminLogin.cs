@@ -15,14 +15,12 @@ namespace EMS
                 Console.Clear();
                 Console.Write("Enter EMP ID To Update the details: ");
                 var empID = InputCheck.NumericCheck("Emp Id");
-
                 var obj2 = new DataVarificationFromDB();
                 if (obj2.EmpIdCheck(empID))
                 {
                     var sqlQuery = @"SELECT userName from Employee where empID = " + empID;
                     try
                     {
-
                         using (var userNameReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
                         {
                             while (userNameReader.Read())
@@ -30,7 +28,6 @@ namespace EMS
                                 _userName = userNameReader.GetString(0);
                                 break;
                             }
-
                         }
                     }
                     catch (Exception ex)
@@ -45,18 +42,14 @@ namespace EMS
                 }
                 else
                 {
-                    Console.WriteLine("!!!Emp ID Is not present in Database: !!!" +
-                                      "press:" +
-                                      "\n1. Re-enter _empID: " +
-                                      "\n2.Press any key to Return previous menu:");
+                    Console.WriteLine("!!!Emp ID Is not present in Database: !!!" + "\npress:" +
+                                      "\n1. Re-enter _empID: " + "\n2.Press any key to Return previous menu:");
                     var check = Console.ReadLine();
-                    if (check == "1")
-                        continue;
+                    if (check == "1") continue;
                 }
 
                 break;
             }
-
         }
 
         public void AdminOption()
@@ -64,13 +57,9 @@ namespace EMS
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" ---->Logged in As Admin<---- " +
-                                  "\n1.To add an Employee: " +
-                                  "\n2.To Manipulate Employee Details: " +
-                                  "\n3.To Retrieve  Employee Details: " +
-                                  "\n4.To Delete Employee Details: " +
-                                  "\n5.TO generate Payroll: " +
-                                  "\n6.Exit ");
+                Console.WriteLine(" ---->Logged in As Admin<---- " + "\n1.To add an Employee: " +
+                                  "\n2.To Manipulate Employee Details: " + "\n3.To Retrieve  Employee Details: " +
+                                  "\n4.To Delete Employee Details: " + "\n5.TO generate Payroll: " + "\n6.Exit ");
                 var choice = InputCheck.NumericCheck("choice");
                 Employee obj;
                 switch (choice)
@@ -92,16 +81,14 @@ namespace EMS
                         Console.Clear();
                         obj = new Employee();
                         var flag = obj.DelEmployeeDetails();
-                        if (flag)
-                            return;
+                        if (flag) return;
                         break;
                     case 5:
                         Console.Clear();
                         obj = new Employee();
                         obj.calculateSalary();
                         break;
-                    case 6:
-                        return;
+                    case 6: return;
                     default:
                         Console.WriteLine("!!! Select From the above Option !!!!");
                         Thread.Sleep(1500);

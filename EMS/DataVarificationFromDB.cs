@@ -1,47 +1,40 @@
 ﻿using System;
-using System.Data.SqlClient;
 
-namespace EMS;
-
-class DataVarificationFromDB
+namespace EMS
 {
-   
-    public int EmpIdAssigning()
+    class DataVarificationFromDB
     {
-        var empIdMaxValue = 0;
-        try
+        public int EmpIdAssigning()
         {
-            var sqlQuery = @"SELECT MAX(EmpId) FROM Employee";
-            using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery))
+            var empIdMaxValue = 0;
+            try
             {
-                while (rdr.Read())
+                var sqlQuery = @"SELECT MAX(EmpId) FROM Employee";
+                using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery))
                 {
-                    empIdMaxValue = rdr.GetInt32(0);
-                    break;
+                    while (rdr.Read())
+                    {
+                        empIdMaxValue = rdr.GetInt32(0);
+                        break;
+                    }
                 }
 
-               
+                return empIdMaxValue + 1;
             }
-
-            return empIdMaxValue + 1;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
+                Console.ReadLine();
+                return -1;
+            }
         }
-        catch (Exception ex)
+
+        public bool EmpIdCheck(double empID)
         {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine("Press any key to return...");
-            Console.ReadLine();
-            return -1;
-        }
-    }
-
-
-
-    public bool EmpIdCheck(double empID)
-    {
-        try
-        {
-            var sqlQuery = @"SELECT EmpId from Employee where empID = " + empID;
-           
+            try
+            {
+                var sqlQuery = @"SELECT EmpId from Employee where empID = " + empID;
                 double tmp = 0;
                 using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery))
                 {
@@ -51,77 +44,75 @@ class DataVarificationFromDB
                         tmp = Convert.ToDouble(tmpID);
                         break;
                     }
-                    
                 }
-                return tmp == empID;
-            
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine("Press any key to return...");
-            Console.ReadLine();
-            return false;
-        }
-    }
 
-    public bool AdminCount(string userName)
-    {
-        try
-        {
-            var sqlQuery = @"SELECT IsAdmin from Credentials";
-            using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery))
+                return tmp == empID;
+            }
+            catch (Exception ex)
             {
-                var count = 0;
-                while (rdr.Read())
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
+                Console.ReadLine();
+                return false;
+            }
+        }
+
+        public bool AdminCount(string userName)
+        {
+            try
+            {
+                var sqlQuery = @"SELECT IsAdmin from Credentials";
+                using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery))
                 {
-                    var isAdmin = rdr.GetBoolean(0);
-                    if (isAdmin)
+                    var count = 0;
+                    while (rdr.Read())
                     {
-                        count++;
-                        if (count > 1)
+                        var isAdmin = rdr.GetBoolean(0);
+                        if (isAdmin)
                         {
-                            return true;
+                            count++;
+                            if (count > 1)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
-                
+
+                return false;
             }
-
-            return false;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine("Press any key to return...");
-            Console.ReadLine();
-            return false;
-        }
-    }
-
-   public bool IsAdmin(string userName)
-   {
-        try
-        {
-            var sqlQuery = @"SELECT IsAdmin  from Credentials where Username = '" + userName + "'";
-            using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery))
+            catch (Exception ex)
             {
-                while (rdr.Read())
-                {
-                    var isAdmin = rdr.GetBoolean(0);
-                    return isAdmin;
-                }
-               
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
+                Console.ReadLine();
+                return false;
             }
-
-            return false;
         }
-        catch (Exception ex)
+
+        public bool IsAdmin(string userName)
         {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine("Press any key to return...");
-            Console.ReadLine();
-            return false;
+            try
+            {
+                var sqlQuery = @"SELECT IsAdmin  from Credentials where Username = '" + userName + "'";
+                using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery))
+                {
+                    while (rdr.Read())
+                    {
+                        var isAdmin = rdr.GetBoolean(0);
+                        return isAdmin;
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Press any key to return...");
+                Console.ReadLine();
+                return false;
+            }
         }
     }
 }

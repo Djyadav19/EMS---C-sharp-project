@@ -10,9 +10,9 @@ namespace EMS
         private string _userName { get; set; }
         private double _salary { get; set; }
 
-        public EmployeeLogin(string _userName)
+        public EmployeeLogin(string userName)
         {
-            this._userName = _userName;
+            this._userName = userName;
         }
 
         public void calculateSalary()
@@ -50,29 +50,17 @@ namespace EMS
                 string sqlQuery = @"SELECT * from Employee where userName = '" + _userName + "'";
                 using (var employeeDetailsReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
                 {
-                    var table = new ConsoleTable(" Employee ID ",
-                        " Employee _firstName ",
-                        " Last Name ",
-                        " User Name ",
-                        " Position ",
-                        " Date of Joining ",
-                        " Mobile ",
-                        " Email ID ",
-                        " Salary ",
+                    var table = new ConsoleTable(" Employee ID ", " Employee _firstName ", " Last Name ", " User Name ",
+                        " Position ", " Date of Joining ", " Mobile ", " Email ID ", " Salary ",
                         " Monthly Fixed Payment ");
                     while (employeeDetailsReader.Read())
                     {
                         var i = 0;
-                        table.AddRow(employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++),
-                            employeeDetailsReader.GetValue(i++));
+                        table.AddRow(employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                            employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                            employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                            employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                            employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++));
                         break;
                     }
 

@@ -8,21 +8,15 @@ namespace EMS
     {
         public static string GettingConnectionString()
         {
-
             ERROR1:
-
             Console.Write("Enter Company Domain: ");
-
             var domain = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(domain))
             {
                 Console.WriteLine("\nDomain can't be null: ");
-                Console.WriteLine("\npress:" +
-                                  "\n1. To Re-try : " +
-                                  "\n   Press any key to Return previous menu:");
+                Console.WriteLine("\npress:" + "\n1. To Re-try : " + "\n   Press any key to Return previous menu:");
                 var check = Console.ReadLine();
-                if (check == "1")
-                    goto ERROR1;
+                if (check == "1") goto ERROR1;
                 return "";
             }
 
@@ -30,23 +24,17 @@ namespace EMS
             {
                 domain = domain.ToLower();
                 Console.WriteLine(domain);
-                var connectionString = ConfigurationManager.ConnectionStrings[domain]
-                    .ConnectionString;
+                var connectionString = ConfigurationManager.ConnectionStrings[domain].ConnectionString;
                 return connectionString;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("!!! Enter a Valid Domain!!!" +
-                                  "\npress:" +
-                                  "\n1. To Re-try : " +
+                Console.WriteLine("!!! Enter a Valid Domain!!!" + "\npress:" + "\n1. To Re-try : " +
                                   "\n   Press any key to Return previous menu:");
                 var check = Console.ReadLine();
-                if (check == "1")
-                    goto ERROR1;
+                if (check == "1") goto ERROR1;
                 return "";
             }
-
-
         }
 
         public static void HowToRegister()
@@ -57,17 +45,12 @@ namespace EMS
 
         static void Main(string[] args)
         {
-
-
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Login in " +
-                                  "\n1. Login : " +
-                                  "\n2. To Read how to register with us: " +
+                Console.WriteLine("Login in " + "\n1. Login : " + "\n2. To Read how to register with us: " +
                                   "\n3. Exit : ");
-                var input = short.TryParse(Console.ReadLine(),
-                    out var choice);
+                var input = short.TryParse(Console.ReadLine(), out var choice);
                 //calling the logging function for login...
                 switch (choice)
                 {

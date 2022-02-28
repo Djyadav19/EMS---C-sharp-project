@@ -29,17 +29,12 @@ namespace EMS
                 Console.Clear();
                 _empID = EmpIdAssigning();
                 Console.WriteLine("Your Emp ID is : " + _empID + "\nPlease Note It");
-
                 Console.Write("Enter First Name: ");
                 var r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
-                _firstName = InputCheck.RegexCheck(r,
-                    " First Name");
-
+                _firstName = InputCheck.RegexCheck(r, " First Name");
                 Console.Write("\nEnter Last Name: ");
                 r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
-                _lastName = InputCheck.RegexCheck(r,
-                    " Last name");
-
+                _lastName = InputCheck.RegexCheck(r, " Last name");
                 Console.Write("\nCreate a User Name: ");
                 string sqlQuery;
                 while (true)
@@ -48,11 +43,8 @@ namespace EMS
                     Console.WriteLine("Enter User Name : \n" +
                                       "( *** Size of User Name must be between greater than 3 and smaller than 20 *** )");
                     r = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,20}$");
-                    var input = InputCheck.RegexCheck(r,
-                        " Username ");
-
+                    var input = InputCheck.RegexCheck(r, " Username ");
                     sqlQuery = @"SELECT userName from Employee where userName = '" + input + "'";
-
                     using (new SqlCommand(sqlQuery))
                     {
                         using (var userNameReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
@@ -78,44 +70,30 @@ namespace EMS
 
                 Console.Write("\nCreate a Password: ");
                 _password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
-
                 Console.Write("\nAppoint Position : ");
                 _position = InputCheck.StringCheck("_position ");
-
                 Console.Write("\nEnter Date Of Joining:*** yyyy-MM-dd *** ");
                 _dojDateTime = InputCheck.DateCheck();
-
                 Console.Write("\nEnter Per_month Salary : ");
                 _montlyFixedSalary = InputCheck.DoubleCheck("Per Month Salary");
-
                 Console.Write("\nEnter Mobile : ");
                 r = new Regex(@"^[0-9]{10}$");
-                _mobile = InputCheck.RegexCheck(r,
-                    " Mobile");
-
+                _mobile = InputCheck.RegexCheck(r, " Mobile");
                 Console.Write("\nEnter Email: ");
                 r = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-                _email = InputCheck.RegexCheck(r,
-                    " Email Id ");
-
+                _email = InputCheck.RegexCheck(r, " Email Id ");
                 Console.Write("\nSelect the Type of Employee\n");
                 _isAdmin = InputCheck.IsBoolean();
-
                 var date = "'" + Convert.ToString(_dojDateTime) + "'";
-
                 sqlQuery = @"insert into Employee values (" + _empID + "," + "'" + _firstName + "'" + "," + "'" +
                            _lastName + "'" + "," + "'" + _userName + "'" + "," + "'" + _position + "'" + "," + date +
                            "," + "'" + _mobile + "'" + "," + "'" + _email + "'" + "," + "NULL" + "," +
                            _montlyFixedSalary + ")";
-
                 SqlQuery.ExecuteInsertQuery(sqlQuery);
                 sqlQuery = @"insert into Credentials values (" + "'" + _userName + "'" + "," + "'" + _password + "'" +
                            "," + Convert.ToInt32(_isAdmin) + ")";
-
-
                 SqlQuery.ExecuteInsertQuery(sqlQuery);
                 Console.WriteLine("Data saved successfully: " + "\nAuto-Redirecting to previous menu:");
-
                 Thread.Sleep(1500);
             }
             catch (Exception ex)
@@ -132,42 +110,27 @@ namespace EMS
                 while (true)
                 {
                     string check;
-                    Console.WriteLine("press:" +
-                                      "\n1.To display All Employee Details :  " +
+                    Console.WriteLine("press:" + "\n1.To display All Employee Details :  " +
                                       "\n2.Enter Emp ID to find the details :" +
                                       "\nPress any key to Return previous menu:");
                     check = Console.ReadLine();
-
                     AllDisplay:
                     if (check == "1")
                     {
                         var sqlQuery = @"SELECT * from Employee";
                         using (var employeeDetailsReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
                         {
-                            var table = new ConsoleTable(" Employee ID ",
-                                " Employee _firstName ",
-                                " Last Name ",
-                                " User Name ",
-                                " Position ",
-                                " Date of Joining ",
-                                " Mobile ",
-                                " Email ID ",
-                                " Salary ",
+                            var table = new ConsoleTable(" Employee ID ", " Employee _firstName ", " Last Name ",
+                                " User Name ", " Position ", " Date of Joining ", " Mobile ", " Email ID ", " Salary ",
                                 " Monthly Fixed Payment ");
-
                             while (employeeDetailsReader.Read())
                             {
                                 var i = 0;
-                                table.AddRow(employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++),
-                                    employeeDetailsReader.GetValue(i++));
+                                table.AddRow(employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                                    employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                                    employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                                    employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                                    employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++));
                             }
 
                             Console.Clear();
@@ -182,38 +145,25 @@ namespace EMS
                     if (check == "2")
                     {
                         SingleDisplay:
-
                         Console.Clear();
                         Console.Write("\nEnter EMP ID To find the details: ");
                         _empID = InputCheck.NumericCheck("Emp Id");
-
                         if (EmpIdCheck(_empID))
                         {
                             var sqlQuery = @"SELECT * from Employee where empID = " + _empID;
                             using (var employeeDetailsReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
                             {
-                                var table = new ConsoleTable(" Employee ID ",
-                                    " Employee _firstName ",
-                                    " Last Name ",
-                                    " User Name ",
-                                    " Position ",
-                                    " Date of Joining ",
-                                    " Mobile ",
-                                    " Email ID ",
-                                    " Salary ",
-                                    " Monthly Fixed Payment ");
+                                var table = new ConsoleTable(" Employee ID ", " Employee _firstName ", " Last Name ",
+                                    " User Name ", " Position ", " Date of Joining ", " Mobile ", " Email ID ",
+                                    " Salary ", " Monthly Fixed Payment ");
                                 while (employeeDetailsReader.Read())
                                 {
                                     var i = 0;
                                     table.AddRow(employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
-                                        employeeDetailsReader.GetValue(i++),
+                                        employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                                        employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                                        employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
+                                        employeeDetailsReader.GetValue(i++), employeeDetailsReader.GetValue(i++),
                                         employeeDetailsReader.GetValue(i++));
                                     break;
                                 }
@@ -222,13 +172,11 @@ namespace EMS
                                 Console.WriteLine(table);
                             }
 
-                            Console.WriteLine("\npress:" +
-                                              "\n1. Re-enter Another EmpID : " +
+                            Console.WriteLine("\npress:" + "\n1. Re-enter Another EmpID : " +
                                               "\n2. To display All Employee Details :" +
                                               "\n   Press any key to Return previous menu:");
                             check = Console.ReadLine();
-                            if (check == "1")
-                                goto SingleDisplay;
+                            if (check == "1") goto SingleDisplay;
                             if (check == "2")
                             {
                                 check = "1";
@@ -239,13 +187,11 @@ namespace EMS
                         }
 
                         Console.WriteLine("!!!EmpId doesn't exists!!! ");
-                        Console.WriteLine("press:" +
-                                          "\n1. Re-enter Another EmpID : " +
+                        Console.WriteLine("press:" + "\n1. Re-enter Another EmpID : " +
                                           "\n2. To display All Employee Details :" +
                                           "\n   Press any key to Return previous menu:");
                         check = Console.ReadLine();
-                        if (check == "1")
-                            goto SingleDisplay;
+                        if (check == "1") goto SingleDisplay;
                         if (check == "2")
                         {
                             check = "1";
@@ -269,11 +215,8 @@ namespace EMS
             {
                 var sqlQuery = @"DELETE from Employee where empID = " + _empID;
                 SqlQuery.ExecuteDeleteQuery(sqlQuery);
-
-
                 sqlQuery = @"DELETE from Credentials where userName = '" + _userName + "'";
                 SqlQuery.ExecuteDeleteQuery(sqlQuery);
-
                 Console.WriteLine("\n *** Deleted Successfully ***");
             }
             catch (Exception ex)
@@ -293,13 +236,10 @@ namespace EMS
                     Console.Clear();
                     Console.Write("Enter EMP ID To Delete the details: ");
                     _empID = InputCheck.NumericCheck("Emp Id");
-
                     string check;
-
                     if (EmpIdCheck(_empID))
                     {
                         var sqlQuery = @"SELECT userName from Employee where empID = " + _empID;
-
                         using (var userNameReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
                         {
                             while (userNameReader.Read())
@@ -314,12 +254,10 @@ namespace EMS
                             if (AdminCount(_userName))
                             {
                                 DeleteQueryExecution();
-                                Console.WriteLine("\npress:" +
-                                                  "\n1. To Delete another : " +
+                                Console.WriteLine("\npress:" + "\n1. To Delete another : " +
                                                   "\n   Press any key to Return previous menu:");
                                 check = Console.ReadLine();
-                                if (check == "1")
-                                    goto DeleteAgain;
+                                if (check == "1") goto DeleteAgain;
                                 return true;
                             }
 
@@ -330,23 +268,18 @@ namespace EMS
                         }
 
                         DeleteQueryExecution();
-
-                        Console.WriteLine("\npress:" +
-                                          "\n1. To Delete another : " +
+                        Console.WriteLine("\npress:" + "\n1. To Delete another : " +
                                           "\n   Press any key to Return previous menu:");
                         check = Console.ReadLine();
-                        if (check == "1")
-                            goto DeleteAgain;
+                        if (check == "1") goto DeleteAgain;
                         return false;
                     }
 
                     Console.WriteLine("!!!This Emp ID is not present in Data base !!!");
-                    Console.WriteLine("\npress:" +
-                                      "\n1. Re-enter _empID: " +
+                    Console.WriteLine("\npress:" + "\n1. Re-enter _empID: " +
                                       "\n   Press any key to Return previous menu:");
                     check = Console.ReadLine();
-                    if (check == "1")
-                        continue;
+                    if (check == "1") continue;
                     break;
                 }
 
@@ -371,8 +304,7 @@ namespace EMS
                 }
 
                 string text = "Salary of this Month: --------------> " + _salary;
-                System.IO.File.WriteAllText(fileName,
-                    text);
+                System.IO.File.WriteAllText(fileName, text);
                 Console.WriteLine("Pay slip for EmpID: " + _empID + " is generated at " + fileName + "\n");
             }
             catch (Exception ex)
@@ -411,17 +343,12 @@ namespace EMS
                         if (tmp > 0)
                         {
                             var sal = Convert.ToString(_salary);
-
                             sqlQuery = @"update  Employee set salary = " + sal + "where empID = " + _empID;
                             SqlQuery.ExecuteUpdateQuery(sqlQuery);
-
                             Payslip();
-
-                            Console.WriteLine("Salary of this Month :--------------> " +
-                                              _salary +
+                            Console.WriteLine("Salary of this Month :--------------> " + _salary +
                                               "\nPress Any key to return");
                             Console.ReadLine();
-
                             break;
                         }
 
@@ -430,14 +357,10 @@ namespace EMS
                         break;
                     }
 
-                    Console.WriteLine("!!! Emp ID Is not present in Database !!! " +
-                                      "\npress:" +
-                                      "\n1. Re-enter _empID: " +
-                                      "\n   Press any key to Return previous menu:");
+                    Console.WriteLine("!!! Emp ID Is not present in Database !!! " + "\npress:" +
+                                      "\n1. Re-enter _empID: " + "\n   Press any key to Return previous menu:");
                     var check = Console.ReadLine();
-
-                    if (check == "1")
-                        continue;
+                    if (check == "1") continue;
                     break;
                 }
             }

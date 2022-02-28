@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-
 namespace EMS;
 
 class SqlQuery
@@ -15,8 +14,7 @@ class SqlQuery
 
     public static SqlDataReader ExecuteSelectQuery(string sqlQuery)
     {
-        var cmd = new SqlCommand(sqlQuery,
-            _sqlConnection);
+        var cmd = new SqlCommand(sqlQuery, _sqlConnection);
         var rdr = cmd.ExecuteReader();
         return rdr;
     }
@@ -25,8 +23,7 @@ class SqlQuery
     {
         using (var adapter = new SqlDataAdapter())
         {
-            adapter.InsertCommand = new SqlCommand(sqlQuery,
-                _sqlConnection);
+            adapter.InsertCommand = new SqlCommand(sqlQuery, _sqlConnection);
             adapter.InsertCommand.ExecuteNonQuery();
         }
     }
@@ -35,8 +32,7 @@ class SqlQuery
     {
         using (var adapter = new SqlDataAdapter())
         {
-            adapter.UpdateCommand = new SqlCommand(sqlQuery,
-                _sqlConnection);
+            adapter.UpdateCommand = new SqlCommand(sqlQuery, _sqlConnection);
             adapter.UpdateCommand.ExecuteNonQuery();
         }
     }
@@ -45,8 +41,7 @@ class SqlQuery
     {
         using (var adapter = new SqlDataAdapter())
         {
-            adapter.DeleteCommand = new SqlCommand(sqlQuery,
-                _sqlConnection);
+            adapter.DeleteCommand = new SqlCommand(sqlQuery, _sqlConnection);
             adapter.DeleteCommand.ExecuteNonQuery();
         }
     }

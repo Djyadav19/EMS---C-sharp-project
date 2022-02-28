@@ -25,23 +25,18 @@ namespace EMS
                     Console.Write("Enter User Name : ");
                     var userName = InputCheck.StringCheck("User Name");
                     Console.Write("Enter Password : ");
-
                     var password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
                     using (var sqlConnection = new SqlConnection(_connectionString))
                     {
-
                         sqlConnection.Open();
                         var establishingSqlConnection = new SqlQuery(sqlConnection);
                         var sqlQuery = @"SELECT IsAdmin  from Credentials where UserName = " + "'" + userName + "'" +
                                        " and Password = " + "'" + password + "'";
-
                         var isAdminDataReader = SqlQuery.ExecuteSelectQuery(sqlQuery);
-
                         if (isAdminDataReader.Read())
                         {
                             _isAdmin = isAdminDataReader.GetBoolean(0);
                             isAdminDataReader.Close();
-
                             Console.WriteLine("\nLogin Success full ");
                             if (_isAdmin)
                             {
@@ -67,12 +62,10 @@ namespace EMS
 
                 Console.WriteLine(
                     "\n!!!Wrong User Name Password!!!\n In case Forget User Name and Password plz contact Admin " +
-                    "\npress:" +
-                    "\n1. Re-enter User Name and Password: " +
+                    "\npress:" + "\n1. Re-enter User Name and Password: " +
                     "\n2.Press any key to Return previous menu:");
                 var check = Console.ReadLine();
-                if (check == "1")
-                    continue;
+                if (check == "1") continue;
                 break;
             }
         }
