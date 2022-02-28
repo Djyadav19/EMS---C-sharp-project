@@ -1,48 +1,52 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Runtime.InteropServices;
+
 
 namespace EMS;
 
 class SqlQuery
 {
-    //function for executing Select Query...
-    public static SqlDataReader ExecuteSelectQuery(string sqlQuery, SqlConnection sqlconnection)
+    private static SqlConnection _sqlConnection;
+
+    public SqlQuery(SqlConnection sqlConnection)
     {
-        var cmd = new SqlCommand(sqlQuery, sqlconnection);
+        _sqlConnection = sqlConnection;
+    }
+
+    public static SqlDataReader ExecuteSelectQuery(string sqlQuery)
+    {
+        var cmd = new SqlCommand(sqlQuery,
+            _sqlConnection);
         var rdr = cmd.ExecuteReader();
         return rdr;
     }
 
-    //function for executing Insert Query...
-    public static void ExecuteInsertQuery(string sqlQuery, SqlConnection sqlconnection)
+    public static void ExecuteInsertQuery(string sqlQuery)
     {
         using (var adapter = new SqlDataAdapter())
         {
-            var cmd = new SqlCommand(sqlQuery, sqlconnection);
-            adapter.InsertCommand = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.InsertCommand = new SqlCommand(sqlQuery,
+                _sqlConnection);
             adapter.InsertCommand.ExecuteNonQuery();
         }
     }
 
-    //function for executing Update Query...
-    public static void ExecuteUpdateQuery(string sqlQuery, SqlConnection sqlconnection)
+    public static void ExecuteUpdateQuery(string sqlQuery)
     {
         using (var adapter = new SqlDataAdapter())
         {
-            var cmd = new SqlCommand(sqlQuery, sqlconnection);
-            adapter.UpdateCommand = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.UpdateCommand = new SqlCommand(sqlQuery,
+                _sqlConnection);
             adapter.UpdateCommand.ExecuteNonQuery();
         }
     }
-    
-    //function for executing Delete Query...
-    public static void ExecuteDeleteQuery(String sqlQuery, SqlConnection sqlconnection)
+
+    public static void ExecuteDeleteQuery(String sqlQuery)
     {
         using (var adapter = new SqlDataAdapter())
         {
-            var cmd = new SqlCommand(sqlQuery, sqlconnection);
-            adapter.DeleteCommand = new SqlCommand(sqlQuery, sqlconnection);
+            adapter.DeleteCommand = new SqlCommand(sqlQuery,
+                _sqlConnection);
             adapter.DeleteCommand.ExecuteNonQuery();
         }
     }

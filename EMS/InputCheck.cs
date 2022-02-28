@@ -5,10 +5,8 @@ using System.Text.RegularExpressions;
 
 namespace EMS
 {
-
     class InputCheck
     {
-
         public static bool IsBoolean()
         {
             while (true)
@@ -17,8 +15,10 @@ namespace EMS
                 var choice = NumericCheck("choice");
                 switch (choice)
                 {
-                    case 1: return true;
-                    case 2: return false;
+                    case 1:
+                        return true;
+                    case 2:
+                        return false;
                     default:
                         Console.Clear();
                         Console.WriteLine("!!!Select from the Given Option !!!!");
@@ -31,55 +31,60 @@ namespace EMS
         {
             while (true)
             {
-                var _password = "";
+                var password = "";
                 var info = Console.ReadKey(true);
                 while (info.Key != ConsoleKey.Enter)
                 {
                     if (info.Key != ConsoleKey.Backspace)
                     {
                         Console.Write("*");
-                        _password += info.KeyChar;
+                        password += info.KeyChar;
                     }
                     else if (info.Key == ConsoleKey.Backspace)
                     {
-                        if (!string.IsNullOrEmpty(_password))
+                        if (!string.IsNullOrEmpty(password))
                         {
                             // remove one character from the list of _password characters
-                            _password = _password.Substring(0, _password.Length - 1);
+                            password = password.Substring(0,
+                                password.Length - 1);
                             // get the location of the cursor
-                            int pos = Console.CursorLeft;
+                            int cursorPosition = Console.CursorLeft;
                             // move the cursor to the left by one character
-                            Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                            Console.SetCursorPosition(cursorPosition - 1,
+                                Console.CursorTop);
                             // replace it with space
                             Console.Write(" ");
                             // move the cursor to the left by one character again
-                            Console.SetCursorPosition(pos - 1, Console.CursorTop);
+                            Console.SetCursorPosition(cursorPosition - 1,
+                                Console.CursorTop);
                         }
                     }
 
                     info = Console.ReadKey(true);
                 }
 
-                if (string.IsNullOrWhiteSpace(_password))
+                if (string.IsNullOrWhiteSpace(password))
                 {
                     Console.WriteLine("Password Can't be NuLL");
                     continue;
                 }
 
-                return _password;
+                return password;
             }
         }
 
         public static string ComputeSha256Hash(string rawData)
         {
-            
             using (var sha256Hash = SHA256.Create())
             {
                 var bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
                 var builder = new StringBuilder();
-                for (var i = 0; i < bytes.Length; i++)
+                for (var i = 0;
+                     i < bytes.Length;
+                     i++)
                 {
-                    builder.Append(bytes[i].ToString("x2"));
+                    builder.Append(bytes[i]
+                        .ToString("x2"));
                 }
 
                 return builder.ToString();
@@ -93,14 +98,14 @@ namespace EMS
                 var input = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(input))
                 {
-                    Console.Write(
-                        "\n!!!Wrong input Typ!!!e\n Try Again\n Enter " + s + ":        ");
+                    Console.Write("\n!!!Wrong input Typ!!!e\n Try Again\n Enter " + s + ":        ");
                     continue;
                 }
 
                 return input;
             }
         }
+
         public static double DoubleCheck(string s)
         {
             var check = false;
@@ -112,10 +117,11 @@ namespace EMS
                 {
                     Console.Write("\n!!!Wrong input Type\n Enter a Numeric Number\n Enter " + s + ":      ");
                     continue;
-
                 }
-                check = double.TryParse(input, out i);
-                if (check && i > 0.0) 
+
+                check = double.TryParse(input,
+                    out i);
+                if (check && i > 0.0)
                     break;
                 check = false;
                 Console.Write("\n!!!Wrong input Type\n Enter a Numeric Number\n Enter " + s + ":      ");
@@ -123,6 +129,7 @@ namespace EMS
 
             return i;
         }
+
         public static int NumericCheck(string s)
         {
             var check = false;
@@ -136,8 +143,10 @@ namespace EMS
                     continue;
                 }
 
-                check = int.TryParse(input, out i);
-                if (check && i >= 0) break;
+                check = int.TryParse(input,
+                    out i);
+                if (check && i >= 0)
+                    break;
                 check = false;
                 Console.Write("\n!!!Wrong input Type\n Enter a Numeric Number:\n Enter " + s + ":      ");
             }
@@ -152,10 +161,12 @@ namespace EMS
             while (!check)
             {
                 var r = new Regex(@"^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$");
-                var input = RegexCheck(r, "Date of Joining");
-                check = DateTime.TryParse(input, out i);
+                var input = RegexCheck(r,
+                    "Date of Joining");
+                check = DateTime.TryParse(input,
+                    out i);
                 var minDate = DateTime.Now.AddYears(-59);
-                if (check && (i <= DateTime.Now && i>minDate))
+                if (check && (i <= DateTime.Now && i > minDate))
                 {
                     break;
                 }
@@ -167,10 +178,9 @@ namespace EMS
             return i;
         }
 
-        public static string RegexCheck(Regex r, string s)
+        public static string RegexCheck(Regex r,
+            string s)
         {
-            //"^[a-zA-Z][a-zA-Z0-9]{3,9}$"
-            //Regex r = new Regex(@"^[0-9]{10}$");
             while (true)
             {
                 var input = Console.ReadLine();
@@ -179,7 +189,7 @@ namespace EMS
                     return input;
                 }
 
-                Console.Write("\n!!!Wrong Input Type!!! \n Enter " + s +" :       ");
+                Console.Write("\n!!!Wrong Input Type!!! \n Enter " + s + " :       ");
             }
         }
     }

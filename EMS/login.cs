@@ -6,7 +6,6 @@ namespace EMS
 {
     class login : DataVarificationFromDB
     {
-        
         private bool _isAdmin { get; set; }
         private string _connectionString { get; set; }
 
@@ -15,7 +14,7 @@ namespace EMS
             this._connectionString = _connectionString;
         }
 
-        public void logging()
+        public void Logging()
         {
             while (true)
             {
@@ -24,40 +23,36 @@ namespace EMS
                     Console.Clear();
                     Console.WriteLine("Login :  ");
                     Console.Write("Enter User Name : ");
-                    var _userName = InputCheck.StringCheck("User Name");
+                    var userName = InputCheck.StringCheck("User Name");
                     Console.Write("Enter Password : ");
 
-                    //Inputcheck.ReadPassword() to hide the password from the screen...
-                    //Inputcheck.ComputeSha256() for generating sha256 of the password...
-
-                    var _password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
-                    using (var sqlconnection = new SqlConnection(_connectionString))
+                    var password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
+                    using (var sqlConnection = new SqlConnection(_connectionString))
                     {
-                        //verifying the credentials from DB using the sqlQuery...
-                        sqlconnection.Open();
-                        var sqlQuery = @"SELECT IsAdmin  from Credentials where UserName = " + "'" + _userName + "'" +
-                                    " and Password = " + "'" + _password + "'";
-                        var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection);
-                        if (rdr.Read())
+
+                        sqlConnection.Open();
+                        var establishingSqlConnection = new SqlQuery(sqlConnection);
+                        var sqlQuery = @"SELECT IsAdmin  from Credentials where UserName = " + "'" + userName + "'" +
+                                       " and Password = " + "'" + password + "'";
+
+                        var isAdminDataReader = SqlQuery.ExecuteSelectQuery(sqlQuery);
+
+                        if (isAdminDataReader.Read())
                         {
-                            //getting the bool value from the reader to decide the login type...
-                            _isAdmin = rdr.GetBoolean(0);
-                            rdr.Close();
+                            _isAdmin = isAdminDataReader.GetBoolean(0);
+                            isAdminDataReader.Close();
+
                             Console.WriteLine("\nLogin Success full ");
                             if (_isAdmin)
                             {
-                                Console.WriteLine("Logged in As Admin ");
-                                Thread.Sleep(1000);
                                 var obj = new AdminLogin();
-                                obj.AdminOption(sqlconnection);
+                                obj.AdminOption();
                                 break;
                             }
                             else
                             {
-                                Console.WriteLine("\nLogged in As Employee: ");
-                                Thread.Sleep(1000);
-                                var obj = new EmployeeLogin(_userName);
-                                obj.EmployeeOption(sqlconnection);
+                                var obj = new EmployeeLogin(userName);
+                                obj.EmployeeOption();
                                 break;
                             }
                         }
@@ -71,11 +66,13 @@ namespace EMS
                 }
 
                 Console.WriteLine(
-                    "\n!!!Wrong User Name Password!!!\n In case Forget User Name and Password plz contact Admin ");
-                Console.WriteLine("\npress:" + "\n1. Re-enter User Name and Password: " +
-                                  "\n2.Press any key to Return previous menu:");
+                    "\n!!!Wrong User Name Password!!!\n In case Forget User Name and Password plz contact Admin " +
+                    "\npress:" +
+                    "\n1. Re-enter User Name and Password: " +
+                    "\n2.Press any key to Return previous menu:");
                 var check = Console.ReadLine();
-                if (check == "1") continue;
+                if (check == "1")
+                    continue;
                 break;
             }
         }

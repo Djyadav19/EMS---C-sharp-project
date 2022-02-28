@@ -6,27 +6,82 @@ namespace EMS
 {
     internal class Program
     {
+        public static string GettingConnectionString()
+        {
+
+            ERROR1:
+
+            Console.Write("Enter Company Domain: ");
+
+            var domain = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(domain))
+            {
+                Console.WriteLine("\nDomain can't be null: ");
+                Console.WriteLine("\npress:" +
+                                  "\n1. To Re-try : " +
+                                  "\n   Press any key to Return previous menu:");
+                var check = Console.ReadLine();
+                if (check == "1")
+                    goto ERROR1;
+                return "";
+            }
+
+            try
+            {
+                domain = domain.ToLower();
+                Console.WriteLine(domain);
+                var connectionString = ConfigurationManager.ConnectionStrings[domain]
+                    .ConnectionString;
+                return connectionString;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("!!! Enter a Valid Domain!!!" +
+                                  "\npress:" +
+                                  "\n1. To Re-try : " +
+                                  "\n   Press any key to Return previous menu:");
+                var check = Console.ReadLine();
+                if (check == "1")
+                    goto ERROR1;
+                return "";
+            }
+
+
+        }
+
+        public static void HowToRegister()
+        {
+            Console.WriteLine("Please Visit this site : " +
+                              " https://github.com/Djyadav19/EMS---C-sharp-project/blob/main/sql_Query.pdf ");
+        }
+
         static void Main(string[] args)
         {
-            //getting connection string from app.config...
-            var _connectionString = ConfigurationManager.ConnectionStrings["str1"].ConnectionString;
-            var connectionString1 = ConfigurationManager.ConnectionStrings["str2"].ConnectionString;
+
+
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Login in " + "\n1. Company A : " + "\n2. Company B : " + "\n3. Exit  : ");
-                short choice = 0;
-                var input = short.TryParse(Console.ReadLine(), out choice);
+                Console.WriteLine("Login in " +
+                                  "\n1. Login : " +
+                                  "\n2. To Read how to register with us: " +
+                                  "\n3. Exit : ");
+                var input = short.TryParse(Console.ReadLine(),
+                    out var choice);
                 //calling the logging function for login...
                 switch (choice)
                 {
                     case 1:
-                        var log = new login(_connectionString);
-                        log.logging();
+                        var connectionString = GettingConnectionString();
+                        if (!string.IsNullOrWhiteSpace(connectionString))
+                        {
+                            var log = new login(connectionString);
+                            log.Logging();
+                        }
+
                         break;
                     case 2:
-                        var log1 = new login(connectionString1);
-                        log1.logging();
+                        HowToRegister();
                         break;
                     case 3:
                         Console.WriteLine("!!!THANK YOU!!!");

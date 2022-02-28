@@ -4,33 +4,33 @@ using System.Threading;
 
 namespace EMS
 {
-    class AdminLogin 
+    class AdminLogin
     {
-        public SqlConnection sqlconnection { get; set; }
         private string _userName { get; set; }
 
-        private void ToGetUsernameForManipulation(SqlConnection sqlconnection)
+        private void ToGetUsernameForManipulation()
         {
             while (true)
             {
                 Console.Clear();
                 Console.Write("Enter EMP ID To Update the details: ");
-                var _empID = InputCheck.NumericCheck("Emp Id");
+                var empID = InputCheck.NumericCheck("Emp Id");
+
                 var obj2 = new DataVarificationFromDB();
-                if (obj2.EmpIdCheck(_empID, sqlconnection))
+                if (obj2.EmpIdCheck(empID))
                 {
-                    var sqlQuery = @"SELECT userName from Employee where empID = " + _empID;
+                    var sqlQuery = @"SELECT userName from Employee where empID = " + empID;
                     try
                     {
 
-                        using (var rdr = SqlQuery.ExecuteSelectQuery(sqlQuery, sqlconnection))
+                        using (var userNameReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
                         {
-                            while (rdr.Read())
+                            while (userNameReader.Read())
                             {
-                                _userName = rdr.GetString(0);
+                                _userName = userNameReader.GetString(0);
                                 break;
                             }
-                            //rdr.Close();
+
                         }
                     }
                     catch (Exception ex)
@@ -40,33 +40,36 @@ namespace EMS
                         Console.ReadLine();
                     }
 
-                    var obj1 = new Manipulation(_userName, _empID, sqlconnection);
+                    var obj1 = new Manipulation(_userName);
                     obj1.Option();
                 }
                 else
                 {
-                    Console.WriteLine("!!!Emp ID Is not present in Database: !!!");
-                    Console.WriteLine("press:" + "\n1. Re-enter _empID: " +
+                    Console.WriteLine("!!!Emp ID Is not present in Database: !!!" +
+                                      "press:" +
+                                      "\n1. Re-enter _empID: " +
                                       "\n2.Press any key to Return previous menu:");
                     var check = Console.ReadLine();
-                    if (check == "1") continue;
+                    if (check == "1")
+                        continue;
                 }
+
                 break;
             }
 
         }
-        
-        public void AdminOption(SqlConnection sqlconnection)
+
+        public void AdminOption()
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" ---->Logged in As Admin<---- ");
-                Console.WriteLine("\n1.To add an Employee: "+
-                                  "\n2.To Manipulate Employee Details: "+
-                                  "\n3.To Retrieve  Employee Details: "+
-                                  "\n4.To Delete Employee Details: "+
-                                  "\n5.TO generate Payroll: "+
+                Console.WriteLine(" ---->Logged in As Admin<---- " +
+                                  "\n1.To add an Employee: " +
+                                  "\n2.To Manipulate Employee Details: " +
+                                  "\n3.To Retrieve  Employee Details: " +
+                                  "\n4.To Delete Employee Details: " +
+                                  "\n5.TO generate Payroll: " +
                                   "\n6.Exit ");
                 var choice = InputCheck.NumericCheck("choice");
                 Employee obj;
@@ -75,32 +78,33 @@ namespace EMS
                     case 1:
                         Console.Clear();
                         obj = new Employee();
-                        obj.SetDataEmployee(sqlconnection);
+                        obj.SetDataEmployee();
                         break;
                     case 2:
-                        ToGetUsernameForManipulation(sqlconnection);
+                        ToGetUsernameForManipulation();
                         break;
                     case 3:
                         Console.Clear();
-                        
                         obj = new Employee();
-                        obj.GetEmployeeDetails(sqlconnection);
+                        obj.GetEmployeeDetails();
                         break;
                     case 4:
                         Console.Clear();
                         obj = new Employee();
-                        var flag =obj.DelEmployeeDetails(sqlconnection);
-                        if(flag) return;
+                        var flag = obj.DelEmployeeDetails();
+                        if (flag)
+                            return;
                         break;
                     case 5:
                         Console.Clear();
                         obj = new Employee();
-                        obj.calculateSalary(sqlconnection);
+                        obj.calculateSalary();
                         break;
-                    case 6: return;
+                    case 6:
+                        return;
                     default:
                         Console.WriteLine("!!! Select From the above Option !!!!");
-                        Thread.Sleep(2000);
+                        Thread.Sleep(1500);
                         break;
                 }
             }
