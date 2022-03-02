@@ -1,48 +1,44 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace EMS;
-
-class SqlQuery
+namespace EMS
 {
-    private static SqlConnection _sqlConnection;
-
-    public SqlQuery(SqlConnection sqlConnection)
+    static class SqlQuery
     {
-        _sqlConnection = sqlConnection;
-    }
+        public static SqlConnection sqlConnection;
 
-    public static SqlDataReader ExecuteSelectQuery(string sqlQuery)
-    {
-        var cmd = new SqlCommand(sqlQuery, _sqlConnection);
-        var rdr = cmd.ExecuteReader();
-        return rdr;
-    }
-
-    public static void ExecuteInsertQuery(string sqlQuery)
-    {
-        using (var adapter = new SqlDataAdapter())
+        public static SqlDataReader ExecuteSelectQuery(string sqlQuery)
         {
-            adapter.InsertCommand = new SqlCommand(sqlQuery, _sqlConnection);
-            adapter.InsertCommand.ExecuteNonQuery();
+            var cmd = new SqlCommand(sqlQuery, sqlConnection);
+            var rdr = cmd.ExecuteReader();
+            return rdr;
         }
-    }
 
-    public static void ExecuteUpdateQuery(string sqlQuery)
-    {
-        using (var adapter = new SqlDataAdapter())
+        public static void ExecuteInsertQuery(string sqlQuery)
         {
-            adapter.UpdateCommand = new SqlCommand(sqlQuery, _sqlConnection);
-            adapter.UpdateCommand.ExecuteNonQuery();
+            using (var adapter = new SqlDataAdapter())
+            {
+                adapter.InsertCommand = new SqlCommand(sqlQuery, sqlConnection);
+                adapter.InsertCommand.ExecuteNonQuery();
+            }
         }
-    }
 
-    public static void ExecuteDeleteQuery(String sqlQuery)
-    {
-        using (var adapter = new SqlDataAdapter())
+        public static void ExecuteUpdateQuery(string sqlQuery)
         {
-            adapter.DeleteCommand = new SqlCommand(sqlQuery, _sqlConnection);
-            adapter.DeleteCommand.ExecuteNonQuery();
+            using (var adapter = new SqlDataAdapter())
+            {
+                adapter.UpdateCommand = new SqlCommand(sqlQuery, sqlConnection);
+                adapter.UpdateCommand.ExecuteNonQuery();
+            }
+        }
+
+        public static void ExecuteDeleteQuery(String sqlQuery)
+        {
+            using (var adapter = new SqlDataAdapter())
+            {
+                adapter.DeleteCommand = new SqlCommand(sqlQuery, sqlConnection);
+                adapter.DeleteCommand.ExecuteNonQuery();
+            }
         }
     }
 }

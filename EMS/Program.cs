@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace EMS
 {
@@ -41,9 +41,11 @@ namespace EMS
         {
             Console.WriteLine("Please Visit this site : " +
                               " https://github.com/Djyadav19/EMS---C-sharp-project/blob/main/sql_Query.pdf ");
+            Console.WriteLine("Press any key to return: ");
+            Console.ReadLine();
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             while (true)
             {
@@ -51,7 +53,7 @@ namespace EMS
                 Console.WriteLine("Login in " + "\n1. Login : " + "\n2. To Read how to register with us: " +
                                   "\n3. Exit : ");
                 var input = short.TryParse(Console.ReadLine(), out var choice);
-                //calling the logging function for login...
+                
                 switch (choice)
                 {
                     case 1:
@@ -72,7 +74,7 @@ namespace EMS
                     default:
                         Console.Clear();
                         Console.WriteLine("!!! Select from the above Option !!!");
-                        Thread.Sleep(1000);
+                        await Task.Delay(1500);
                         break;
                 }
             }

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Threading;
+using System.Threading.Tasks;
 using ConsoleTables;
 
 namespace EMS
@@ -22,11 +21,11 @@ namespace EMS
                 Console.Write(" Enter the Number of working days:  ");
                 var wrokingDays = InputCheck.NumericCheck(" Working Days ");
                 string sqlQuery = @"SELECT DailyWages from Employee where userName = " + "'" + _userName + "'";
-                using (var monthlySalaryDataReaderReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
+                using (var monthlySalaryReader = SqlQuery.ExecuteSelectQuery(sqlQuery))
                 {
-                    while (monthlySalaryDataReaderReader.Read())
+                    while (monthlySalaryReader.Read())
                     {
-                        var tmp = monthlySalaryDataReaderReader.GetDouble(0);
+                        var tmp = monthlySalaryReader.GetDouble(0);
                         _salary = (wrokingDays * tmp) / 30;
                         break;
                     }
@@ -78,7 +77,7 @@ namespace EMS
             }
         }
 
-        public void EmployeeOption()
+        public async Task EmployeeOption()
         {
             while (true)
             {
@@ -101,7 +100,7 @@ namespace EMS
                         return;
                     default:
                         Console.WriteLine("!!! Select from the above Option !!!");
-                        Thread.Sleep(1500);
+                        await Task.Delay(1500);
                         break;
                 }
             }

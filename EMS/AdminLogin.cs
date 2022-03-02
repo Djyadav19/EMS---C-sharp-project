@@ -1,12 +1,18 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace EMS
 {
+    
     class AdminLogin
     {
+        private string _loggedInUserName { get; set; }
         private string _userName { get; set; }
+
+        public AdminLogin(string _loggedInUser)
+        {
+            _loggedInUserName = _loggedInUser;
+        }
 
         private void ToGetUsernameForManipulation()
         {
@@ -37,8 +43,8 @@ namespace EMS
                         Console.ReadLine();
                     }
 
-                    var obj1 = new Manipulation(_userName);
-                    obj1.Option();
+                    var obj = new Manipulation(_userName);
+                    obj.Option();
                 }
                 else
                 {
@@ -52,14 +58,13 @@ namespace EMS
             }
         }
 
-        public void AdminOption()
+        public async Task AdminOption()
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine(" ---->Logged in As Admin<---- " + "\n1.To add an Employee: " +
-                                  "\n2.To Manipulate Employee Details: " + "\n3.To Retrieve  Employee Details: " +
-                                  "\n4.To Delete Employee Details: " + "\n5.TO generate Payroll: " + "\n6.Exit ");
+                Console.WriteLine(" ---->Logged in As Admin<---- ");
+                MenuUsingEnum.AdminOptions();
                 var choice = InputCheck.NumericCheck("choice");
                 Employee obj;
                 switch (choice)
@@ -80,8 +85,8 @@ namespace EMS
                     case 4:
                         Console.Clear();
                         obj = new Employee();
-                        var flag = obj.DelEmployeeDetails();
-                        if (flag) return;
+                        var isAdminDeleted = obj.DelEmployeeDetails(_loggedInUserName);
+                        if (Convert.ToBoolean(isAdminDeleted)) return;
                         break;
                     case 5:
                         Console.Clear();
@@ -91,7 +96,7 @@ namespace EMS
                     case 6: return;
                     default:
                         Console.WriteLine("!!! Select From the above Option !!!!");
-                        Thread.Sleep(1500);
+                        await Task.Delay(1500);
                         break;
                 }
             }

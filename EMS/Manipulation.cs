@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace EMS
 {
@@ -53,7 +52,7 @@ namespace EMS
             }
         }
 
-        public void UpdateAdmin()
+        public async void UpdateAdmin()
         {
             Console.Clear();
             Console.WriteLine("Appoint as  : ");
@@ -81,7 +80,7 @@ namespace EMS
                         else
                         {
                             Console.WriteLine("You are the single Admin :" + "\nRedirecting to previous menu ");
-                            Thread.Sleep(1500);
+                            await Task.Delay(1500);
                             return;
                         }
                     default:
@@ -95,7 +94,7 @@ namespace EMS
             }
         }
 
-        public void Option()
+        public async Task Option()
         {
             while (true)
             {
@@ -127,7 +126,7 @@ namespace EMS
                     case 5: return;
                     default:
                         Console.Write("!!! Select from the above Option !!!");
-                        Thread.Sleep(2000);
+                        await Task.Delay(1500);
                         break;
                 }
             }

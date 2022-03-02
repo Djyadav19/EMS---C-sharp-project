@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Threading;
+
 
 namespace EMS
 {
@@ -26,10 +26,10 @@ namespace EMS
                     var userName = InputCheck.StringCheck("User Name");
                     Console.Write("Enter Password : ");
                     var password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
-                    using (var sqlConnection = new SqlConnection(_connectionString))
+                    using (SqlQuery.sqlConnection = new SqlConnection(_connectionString))
                     {
-                        sqlConnection.Open();
-                        var establishingSqlConnection = new SqlQuery(sqlConnection);
+                        
+                        SqlQuery.sqlConnection.Open();
                         var sqlQuery = @"SELECT IsAdmin  from Credentials where UserName = " + "'" + userName + "'" +
                                        " and Password = " + "'" + password + "'";
                         var isAdminDataReader = SqlQuery.ExecuteSelectQuery(sqlQuery);
@@ -40,7 +40,7 @@ namespace EMS
                             Console.WriteLine("\nLogin Success full ");
                             if (_isAdmin)
                             {
-                                var obj = new AdminLogin();
+                                var obj = new AdminLogin(userName);
                                 obj.AdminOption();
                                 break;
                             }
@@ -57,7 +57,6 @@ namespace EMS
                 {
                     Console.WriteLine(ex.Message);
                     Console.ReadLine();
-                    //return false;
                 }
 
                 Console.WriteLine(
