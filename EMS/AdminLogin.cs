@@ -58,7 +58,7 @@ namespace EMS
             }
         }
 
-        public async Task AdminOption()
+        public void AdminOption()
         {
             while (true)
             {
@@ -96,7 +96,7 @@ namespace EMS
                     case 6: return;
                     default:
                         Console.WriteLine("!!! Select From the above Option !!!!");
-                        await Task.Delay(1500);
+                        Task.Delay(1500).GetAwaiter().GetResult();
                         break;
                 }
             }

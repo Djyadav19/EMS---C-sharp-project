@@ -11,7 +11,7 @@ class MenuUsingEnum
         To_Retrieve_Employee_Details = 3,
         To_Delete_Employee_Details = 4,
         To_generate_Payroll = 5,
-        Exit = 6,
+        To_Logout= 6,
     }
     /*
     enum LoginPageMenu

@@ -77,13 +77,13 @@ namespace EMS
             }
         }
 
-        public async Task EmployeeOption()
+        public void EmployeeOption()
         {
             while (true)
             {
                 Console.Clear();
                 Console.WriteLine(" ---->Logged in As Employee\n " +
-                                  "\n1.To Retrieve  Employee Details: \n2.TO generate Payroll:    \n3.Exit ");
+                                  "\n1.To Retrieve  Employee Details: \n2.TO generate Payroll:    \n3.To Logout: ");
                 var choice = InputCheck.NumericCheck("choice");
                 switch (choice)
                 {
@@ -100,7 +100,7 @@ namespace EMS
                         return;
                     default:
                         Console.WriteLine("!!! Select from the above Option !!!");
-                        await Task.Delay(1500);
+                        Task.Delay(1500).GetAwaiter().GetResult();
                         break;
                 }
             }

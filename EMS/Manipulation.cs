@@ -14,16 +14,16 @@ namespace EMS
             this._userName = userName;
         }
 
-        public void UpdateMobile_Email(string s, Regex r)
+        public void UpdateMobile_Email(string column, Regex regex)
         {
             try
             {
-                var input = InputCheck.RegexCheck(r, s);
-                input = "'" + input + "'";
+                var inputForUpdate = InputCheck.RegexCheck(regex, column);
+                inputForUpdate = "'" + inputForUpdate + "'";
                 var sqlQuery = "";
-                sqlQuery = @"update  Employee set " + s + " = " + input + " where username = '" + _userName + "'";
+                sqlQuery = @"update  Employee set " + column + " = " + inputForUpdate + " where username = '" + _userName + "'";
                 SqlQuery.ExecuteUpdateQuery(sqlQuery);
-                Console.WriteLine("\n " + s + " Updated Successfully  \n Press Any key to return");
+                Console.WriteLine("\n " + column + " Updated Successfully  \n Press Any key to return");
                 Console.ReadLine();
                 Console.Clear();
             }
@@ -52,15 +52,15 @@ namespace EMS
             }
         }
 
-        public async void UpdateAdmin()
+        public  void UpdateAdmin()
         {
             Console.Clear();
             Console.WriteLine("Appoint as  : ");
-            short isAdmin = 0;
             while (true)
             {
                 Console.WriteLine("1.Admin" + "\n2.Employee");
                 var choice = InputCheck.NumericCheck("choice");
+                short isAdmin = 0;
                 switch (choice)
                 {
                     case 1:
@@ -80,7 +80,7 @@ namespace EMS
                         else
                         {
                             Console.WriteLine("You are the single Admin :" + "\nRedirecting to previous menu ");
-                            await Task.Delay(1500);
+                            Task.Delay(1500).GetAwaiter().GetResult();
                             return;
                         }
                     default:
@@ -94,19 +94,19 @@ namespace EMS
             }
         }
 
-        public async Task Option()
+        public void Option()
         {
             while (true)
             {
-                Console.WriteLine(" 1.Update _mobile: " + "\n 2.Update _email: " + "\n 3.Update Employee Type: " +
-                                  "\n 4.To change Password :" + "\n 5.Exit: ");
+                Console.WriteLine(" 1.Update Mobile Number : " + "\n 2.Update Email ID : " + "\n 3.Update Employee Type: " +
+                                  "\n 4.To change Password :" + "\n 5.Previous Menu ");
                 var choice = InputCheck.NumericCheck("choice");
                 switch (choice)
                 {
                     case 1:
                         Console.Clear();
                         Console.Write("\nEnter Mobile : ");
-                        UpdateMobile_Email("Mobile", new Regex(@"^[0-9]{10}$"));
+                        UpdateMobile_Email("Mobile", new Regex(@"^[1-9]{1}[0-9]{9}$"));
                         break;
                     case 2:
                         Console.Clear();
@@ -126,7 +126,7 @@ namespace EMS
                     case 5: return;
                     default:
                         Console.Write("!!! Select from the above Option !!!");
-                        await Task.Delay(1500);
+                        Task.Delay(1500).GetAwaiter().GetResult();
                         break;
                 }
             }

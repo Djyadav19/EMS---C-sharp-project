@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace EMS
 {
-    static class SqlQuery
+    internal static class SqlQuery
     {
         public static SqlConnection sqlConnection;
 
@@ -16,29 +16,23 @@ namespace EMS
 
         public static void ExecuteInsertQuery(string sqlQuery)
         {
-            using (var adapter = new SqlDataAdapter())
-            {
-                adapter.InsertCommand = new SqlCommand(sqlQuery, sqlConnection);
-                adapter.InsertCommand.ExecuteNonQuery();
-            }
+            using var adapter = new SqlDataAdapter();
+            adapter.InsertCommand = new SqlCommand(sqlQuery, sqlConnection);
+            adapter.InsertCommand.ExecuteNonQuery();
         }
 
         public static void ExecuteUpdateQuery(string sqlQuery)
         {
-            using (var adapter = new SqlDataAdapter())
-            {
-                adapter.UpdateCommand = new SqlCommand(sqlQuery, sqlConnection);
-                adapter.UpdateCommand.ExecuteNonQuery();
-            }
+            using var adapter = new SqlDataAdapter();
+            adapter.UpdateCommand = new SqlCommand(sqlQuery, sqlConnection);
+            adapter.UpdateCommand.ExecuteNonQuery();
         }
 
         public static void ExecuteDeleteQuery(String sqlQuery)
         {
-            using (var adapter = new SqlDataAdapter())
-            {
-                adapter.DeleteCommand = new SqlCommand(sqlQuery, sqlConnection);
-                adapter.DeleteCommand.ExecuteNonQuery();
-            }
+            using var adapter = new SqlDataAdapter();
+            adapter.DeleteCommand = new SqlCommand(sqlQuery, sqlConnection);
+            adapter.DeleteCommand.ExecuteNonQuery();
         }
     }
 }

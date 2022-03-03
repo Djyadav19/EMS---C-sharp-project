@@ -27,7 +27,7 @@ namespace EMS
                 var connectionString = ConfigurationManager.ConnectionStrings[domain].ConnectionString;
                 return connectionString;
             }
-            catch (Exception ex)
+            catch 
             {
                 Console.WriteLine("!!! Enter a Valid Domain!!!" + "\npress:" + "\n1. To Re-try : " +
                                   "\n   Press any key to Return previous menu:");
@@ -45,7 +45,7 @@ namespace EMS
             Console.ReadLine();
         }
 
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             while (true)
             {
@@ -74,7 +74,7 @@ namespace EMS
                     default:
                         Console.Clear();
                         Console.WriteLine("!!! Select from the above Option !!!");
-                        await Task.Delay(1500);
+                        Task.Delay(1500).GetAwaiter().GetResult();
                         break;
                 }
             }

@@ -23,7 +23,7 @@ namespace EMS
         private bool _isAdmin { get; set; }
         private string _password;
 
-        public async Task SetDataEmployee()
+        public void SetDataEmployee()
         {
             try
             {
@@ -32,12 +32,11 @@ namespace EMS
                 Console.WriteLine("Your Emp ID is : " + _empID + "\nPlease Note It");
 
                 Console.Write("Enter First Name: ");
-                var r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
-                _firstName = InputCheck.RegexCheck(r, " First Name");
+                var regexName = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
+                _firstName = InputCheck.RegexCheck(regexName, " First Name");
 
                 Console.Write("\nEnter Last Name: ");
-                r = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
-                _lastName = InputCheck.RegexCheck(r, " Last name");
+                _lastName = InputCheck.RegexCheck(regexName, " Last name");
 
                 Console.Write("\nCreate a User Name: ");
                 string sqlQuery;
@@ -47,8 +46,8 @@ namespace EMS
                     Console.WriteLine("Enter User Name : \n" +
                                       "( *** Size of User Name must be between greater than 3 and smaller than 20 *** )");
 
-                    r = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,20}$");
-                    var input = InputCheck.RegexCheck(r, " Username ");
+                    var regexUserName = new Regex(@"^[A-Za-z][A-Za-z0-9_]{3,20}$");
+                    var input = InputCheck.RegexCheck(regexUserName, " Username ");
 
                     sqlQuery = @"SELECT userName from Employee where userName = '" + input + "'";
                     using (new SqlCommand(sqlQuery))
@@ -78,7 +77,8 @@ namespace EMS
                 _password = InputCheck.ComputeSha256Hash(InputCheck.ReadPassword());
 
                 Console.Write("\nAppoint Position : ");
-                _position = InputCheck.StringCheck("_position ");
+                var positionRegex = new Regex(@"^[a-zA-Z][a-zA-Z0-9 ]{1,15}[a-z0-9A-Z]{1,15}$");
+                _position = InputCheck.RegexCheck(positionRegex, " Position");
 
                 Console.Write("\nEnter Date Of Joining:*** yyyy-MM-dd *** ");
                 _dojDateTime = InputCheck.DateCheck();
@@ -87,12 +87,12 @@ namespace EMS
                 _montlyFixedSalary = InputCheck.DoubleCheck("Per Month Salary");
 
                 Console.Write("\nEnter Mobile : ");
-                r = new Regex(@"^[0-9]{10}$");
-                _mobile = InputCheck.RegexCheck(r, " Mobile");
+                var mobileRegex = new Regex(@"^[1-9]{1}[0-9]{9}$");
+                _mobile = InputCheck.RegexCheck(mobileRegex, " Mobile");
 
                 Console.Write("\nEnter Email: ");
-                r = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-                _email = InputCheck.RegexCheck(r, " Email Id ");
+                var emailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+                _email = InputCheck.RegexCheck(emailRegex, " Email Id ");
 
                 Console.Write("\nSelect the Type of Employee\n");
                 _isAdmin = InputCheck.IsBoolean();
@@ -111,7 +111,7 @@ namespace EMS
                 SqlQuery.ExecuteInsertQuery(sqlQuery);
 
                 Console.WriteLine("Data saved successfully: " + "\nAuto-Redirecting to previous menu:");
-                await Task.Delay(1500);
+                Task.Delay(1500).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -242,6 +242,7 @@ namespace EMS
                 SqlQuery.ExecuteDeleteQuery(sqlQuery);
 
                 Console.WriteLine("\n *** Deleted Successfully ***");
+                Task.Delay(1500).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -250,7 +251,7 @@ namespace EMS
             }
         }
 
-        public async Task<bool> DelEmployeeDetails(string loggedInUser)
+        public bool DelEmployeeDetails(string loggedInUser)
         {
             try
             {
@@ -290,7 +291,7 @@ namespace EMS
 
                             Console.WriteLine(
                                 "Sir !!! You are the single Admin:!!!\n***First Appoint anyone else as Admin*** \nRedirecting to the Previous menu: ");
-                            await Task.Delay(1500);
+                            Task.Delay(1500).GetAwaiter().GetResult();
                             break;
                         }
 
